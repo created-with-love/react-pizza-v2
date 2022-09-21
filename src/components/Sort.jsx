@@ -8,7 +8,7 @@ export default function Sort() {
   const [activeSort, setActiveSort] = useState(sortArray[0]);
   const [showPopup, setShowPopup] = useState(false);
 
-  const onSortClick = sort => {
+  const onSortItemClick = sort => {
     setActiveSort(sort);
     setShowPopup(false);
   };
@@ -37,7 +37,7 @@ export default function Sort() {
               <li
                 key={sortOption}
                 className={activeSort === sortOption ? 'active' : ''}
-                onClick={() => onSortClick(sortOption)}
+                onClick={() => onSortItemClick(sortOption)}
               >
                 {sortOption}
               </li>
