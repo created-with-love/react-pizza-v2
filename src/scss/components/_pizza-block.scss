@@ -58,6 +58,11 @@
     align-items: center;
     justify-content: space-between;
     margin-top: 20px;
+
+    & .button {
+      display: flex;
+      align-items: center;
+    }
   }
 
   &__price {
@@ -65,5 +70,9 @@
     font-size: 22px;
     line-height: 27px;
     letter-spacing: 0.015em;
+  }
+
+  &__add-icon {
+    margin-right: 2px;
   }
 }
