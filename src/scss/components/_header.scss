@@ -28,11 +28,26 @@
     p {
       color: #7b7b7b;
     }
+
+    @media (max-width: 580px) {
+      img {
+        width: 55px;
+        margin-left: 25px;
+      }
+
+      div {
+        display: none;
+      }
+    }
   }
 
   &__cart-icon {
     margin-right: 5px;
     height: 18px;
     width: 18px;
+  }
+
+  @media (max-width: 580px) {
+    padding: 20px 0;
   }
 }
