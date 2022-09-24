@@ -34,7 +34,9 @@
         width: 55px;
         margin-left: 25px;
       }
+    }
 
+    @media (max-width: 930px) {
       div {
         display: none;
       }
@@ -49,5 +51,9 @@
 
   @media (max-width: 580px) {
     padding: 20px 0;
+  }
+
+  @media (max-width: 680px) {
+    padding-bottom: 80px;
   }
 }

@@ -1,0 +1,61 @@
+@import '../../scss/variables.scss';
+
+.root {
+  display: flex;
+  position: relative;
+  align-items: center;
+
+  .searchAbsolute {
+    position: absolute;
+    width: 20px;
+    top: 10px;
+  }
+
+  .searchIcon {
+    left: 8px;
+    opacity: 0.3;
+  }
+
+  .cleanBtn {
+    right: 8px;
+    background-color: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    &:hover img {
+      opacity: 0.7;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      opacity: 0.3;
+    }
+  }
+
+  input {
+    width: 300px;
+    padding: 8px 20px 8px 30px;
+    font-family: "Nunito", Roboto, system-ui, Tahoma, sans-serif;
+    font-size: 16px;
+    border: 1px solid $dark-gray;
+    border-radius: 5px;
+    transition: all 0.1s ease-out;
+
+    &:focus {
+      border: 1px solid $dark-gray-focused;
+    }
+  }
+
+  @media (max-width: 680px) {
+    position: absolute;
+    top: 120px;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
+
+  @media (min-width: 550px) and (max-width: 680px) {
+    top: 135px;
+  }
+}

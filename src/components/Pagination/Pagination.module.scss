@@ -1,0 +1,57 @@
+@import '../../scss/variables.scss';
+
+.root {
+  display: flex;
+  justify-content: center;
+
+  li {
+    margin-right: 10px;
+    display: inline-flex;
+
+    a {
+      display: inline-flex;
+      justify-content: center;
+      padding: 10px;
+      width: 40px;
+      height: 40px;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid $orange;
+      border-radius: 30px;
+      transition: all 0.15s ease-out;
+      color: $orange;
+      cursor: pointer;
+
+      &:hover {
+        color: white;
+        background-color: $orange;
+      }
+    }
+  }
+
+    // :global give access to classes not from current module
+    :global {
+      li.selected {
+        a {
+          background-color: $orange;
+          color: white;
+        }
+      }
+  
+      li.disabled {
+        a {
+          background-color: $gray-line;
+          border-color: $dark-gray-focused;
+          color: $dark-gray-focused;
+          cursor: auto;
+        }
+  
+        &:hover a {
+          background-color: $gray-line;
+          border-color: $dark-gray-focused;
+          color: $dark-gray-focused;
+          cursor: auto;
+        }
+      }
+    }
+}
