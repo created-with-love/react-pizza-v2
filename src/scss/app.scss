@@ -110,6 +110,11 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 15px;
+
+    @media (min-width: 768px) {
+      padding: 0 30px;
+    }
   }
 
   .content__title {
@@ -130,7 +135,8 @@ body {
     }
 
     @media (max-width: 767px) {
-      font-size: 24px;
+      font-size: 20px;
+      margin: 10px 0 10px 0;
     }
   }
 
@@ -181,11 +187,20 @@ body {
       display: flex;
       align-items: center;
       margin-right: 15px;
-      width: 10%;
 
       img {
         width: 80px;
         height: 80px;
+
+        @media (min-width: 768px) {
+          width: 100px;
+          height: 100px;
+        }
+
+        @media (min-width: 1260px) {
+          width: 125px;
+          height: 125px;
+        }
       }
     }
 
@@ -193,7 +208,6 @@ body {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      width: 40%;
 
       h3 {
         font-weight: bold;
@@ -212,7 +226,6 @@ body {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      width: 13%;
 
       &-minus {
         svg {
@@ -223,6 +236,7 @@ body {
       }
 
       b {
+        margin: 0 5px;
         font-size: 22px;
       }
     }
@@ -238,13 +252,17 @@ body {
         font-size: 22px;
         letter-spacing: 0.01em;
       }
+
+      @media (max-width: 850px) {
+        width: 20%;
+        font-size: 16px;
+      }
     }
 
     &-remove {
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      width: 4%;
 
       .button {
         border-color: darken($color: $gray-line, $amount: 10);
@@ -271,6 +289,22 @@ body {
         }
       }
     }
+
+    @media (max-width: 715px) {
+      flex-direction: column;
+    }
+  }
+
+  &__item .cart__content-wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+
+    @media (max-width: 715px) {
+      &:nth-child(1) {
+        margin-bottom: 10px;
+      }
+    }
   }
 
   &__bottom {
@@ -279,6 +313,7 @@ body {
     &-details {
       display: flex;
       justify-content: space-between;
+      padding: 0 15px;
 
       span {
         font-size: 22px;
@@ -288,12 +323,26 @@ body {
             color: $orange;
           }
         }
+
+        @media (max-width: 850px) {
+          font-size: 16px;
+        }
+
+        @media (max-width: 450px) {
+          font-size: 14px;
+          font-weight: bold;
+        }
+      }
+
+      @media (min-width: 768px) {
+        padding: 0 30px;
       }
     }
 
     &-buttons {
       display: flex;
       justify-content: space-between;
+      padding: 0 15px;
       margin-top: 40px;
 
       .go-back-btn {
@@ -333,6 +382,10 @@ body {
         font-weight: 600;
         width: 210px;
         padding: 16px;
+      }
+
+      @media (min-width: 768px) {
+        padding: 0 30px;
       }
     }
   }

@@ -25,6 +25,22 @@
     transition: all $duration ease-in-out;
   }
 
+  &.pay-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &.pay-btn, &.go-back-btn {
+    @media (max-width: 850px) {
+      width: 150px !important;
+      padding: 5px 5px;
+      span {
+        font-size: 14px;
+      }
+    }
+  }
+
   &:hover {
     background-color: darken($orange, 8%);
   }

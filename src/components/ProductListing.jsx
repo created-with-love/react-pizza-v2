@@ -1,26 +1,7 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
 import PizzaBlock from './PizzaBlock';
 import Skeleton from './Skeleton';
 
-const instance = axios.create({
-  baseURL: 'https://632c18141aabd8373992d871.mockapi.io/',
-});
-
-export default function ProductListing() {
-  const [pizzas, setPizzas] = useState([]);
-  const [isLoading, setLoading] = useState(true);
-
-  useEffect(() => {
-    instance
-      .get('items')
-      .then(({ data }) => {
-        setPizzas(data);
-        setLoading(false);
-      })
-      .catch(console.log);
-  }, []);
-
+export default function ProductListing({ pizzas, isLoading }) {
   return (
     <div className="content__items">
       {isLoading

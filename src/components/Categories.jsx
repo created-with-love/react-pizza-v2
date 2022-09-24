@@ -1,20 +1,9 @@
-import { useState } from 'react';
 import '../scss/components/_categories.scss';
 
-const Categories = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const categories = [
-    'Всі',
-    "М'ясна",
-    'Вегетаріанська',
-    'Гриль',
-    'Гостра',
-    'Закрита',
-  ];
-
+const Categories = ({ value, setValue, categories }) => {
   const onClickCategory = e => {
-    setActiveIndex(Number(e.target.dataset.index));
+    const index = Number(e.target.dataset.index);
+    setValue(index);
   };
 
   return (
@@ -23,7 +12,7 @@ const Categories = () => {
         {categories.map((name, index) => (
           <li
             onClick={onClickCategory}
-            className={activeIndex === index ? 'active' : ''}
+            className={value === index ? 'active' : ''}
             data-index={index}
             key={name}
           >

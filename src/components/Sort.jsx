@@ -1,15 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import '../scss/components/_sort.scss';
 import arrowTop from '../assets/img/arrow-top.svg';
 import arrowDown from '../assets/img/down-arrow.svg';
 
-export default function Sort() {
-  const sortArray = ['популярністю', 'ціною', 'алфавітом'];
-  const [activeSort, setActiveSort] = useState(sortArray[0]);
+export default function Sort({ sort, setSort, sortArray }) {
   const [showPopup, setShowPopup] = useState(false);
+  const sortRef = useRef();
 
-  const onSortItemClick = sort => {
-    setActiveSort(sort);
+  const onSortItemClick = value => {
+    setSort(value);
     setShowPopup(false);
   };
 
@@ -17,31 +16,55 @@ export default function Sort() {
     setShowPopup(!showPopup);
   };
 
+  const handleOutsideClick = e => {
+    // e.path и его аналог для браузера firefox
+    const path =
+      e.path ||
+      (e.composedPath && e.composedPath()) ||
+      e.composedPath(e.target);
+    if (!path.includes(sortRef.current)) {
+      setShowPopup(false);
+    }
+  };
+
+  useEffect(() => {
+    document.body.addEventListener('click', handleOutsideClick);
+    return () => {
+      document.body.removeEventListener('click', handleOutsideClick);
+    };
+  }, []);
+
   return (
-    <div className="sort">
+    <div className="sort" ref={sortRef}>
       <div className="sort__label">
         <img
           className="sort__arrow"
           src={showPopup ? arrowTop : arrowDown}
           alt="sort-arrow"
         />
-        <b>Сортувати за:</b>
         <button type="button" onClick={handlePopup} className="sort__button">
-          {activeSort}
+          {sort.name}
         </button>
       </div>
       {showPopup && (
         <div className="sort__popup">
           <ul>
-            {sortArray.map(sortOption => (
-              <li
-                key={sortOption}
-                className={activeSort === sortOption ? 'active' : ''}
-                onClick={() => onSortItemClick(sortOption)}
-              >
-                {sortOption}
-              </li>
-            ))}
+            {sortArray.map(item => {
+              const isPrice = item.value === 'price';
+              const isActive = isPrice
+                ? sort.value === item.value && sort.order === item.order
+                : sort.value === item.value;
+
+              return (
+                <li
+                  key={item.name}
+                  className={isActive ? 'active' : ''}
+                  onClick={() => onSortItemClick(item)}
+                >
+                  {item.name}
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}
