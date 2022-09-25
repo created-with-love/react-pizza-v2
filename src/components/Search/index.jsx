@@ -1,8 +1,12 @@
+import { useContext } from 'react';
 import searchIcon from '../../assets/img/search.png';
 import closeIcon from '../../assets/img/close.png';
+import { SearchContext } from 'App';
 import styles from './Search.module.scss';
 
-const Search = ({ searchInput, setSearchInput }) => {
+const Search = () => {
+  const { searchInput, setSearchInput } = useContext(SearchContext);
+
   const handleSearchInput = e => {
     setSearchInput(e.target.value);
   };

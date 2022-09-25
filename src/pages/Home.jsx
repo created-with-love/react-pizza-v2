@@ -13,7 +13,6 @@ export default function Home({ searchInput }) {
   const [isLoading, setLoading] = useState(true);
   const [category, setCategory] = useState(0);
   const [sort, setSort] = useState(sortArray[0]);
-  const [filteredPizza, setFilteredPizza] = useState([]);
   const [pizzaCount, setPizzaCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
@@ -44,33 +43,43 @@ export default function Home({ searchInput }) {
 
   useEffect(() => {
     if (searchInput) {
+      const order = getOrder(sort);
+
+      setLoading(true);
       setCategory(0);
-      setFilteredPizza(
-        pizzas.filter(({ name }) =>
-          name.toLowerCase().includes(searchInput.toLowerCase()),
-        ),
-      );
+      instance
+        .get(
+          `items?limit=${itemsPerPage}&page=1&sortBy=${sort.value}&order=${order}&search=${searchInput}`,
+        )
+        .then(data => {
+          const { items, count } = data?.data;
+          setPizzas(items);
+          setPizzaCount(count);
+          setLoading(false);
+        });
     }
-  }, [pizzas, searchInput]);
+  }, [searchInput, sort]);
 
   useEffect(() => {
-    const categoryBlock = category > 0 ? `&category=${category}` : '';
-    const order = getOrder(sort);
+    if (!searchInput) {
+      const categoryBlock = category > 0 ? `&category=${category}` : '';
+      const order = getOrder(sort);
 
-    setLoading(true);
-    instance
-      .get(
-        `items?limit=${itemsPerPage}&page=${currentPage}&sortBy=${sort.value}${categoryBlock}&order=${order}`,
-      )
-      .then(data => {
-        const { items, count } = data?.data;
-        setPizzas(items);
-        setPizzaCount(count);
-        setLoading(false);
-      })
-      .catch(console.log);
-    scrollToTop();
-  }, [category, currentPage, sort]);
+      setLoading(true);
+      instance
+        .get(
+          `items?limit=${itemsPerPage}&page=${currentPage}&sortBy=${sort.value}${categoryBlock}&order=${order}`,
+        )
+        .then(data => {
+          const { items, count } = data?.data;
+          setPizzas(items);
+          setPizzaCount(count);
+          setLoading(false);
+        })
+        .catch(console.log);
+      scrollToTop();
+    }
+  }, [category, currentPage, sort, searchInput]);
 
   useEffect(() => {
     scrollToTop();
@@ -89,10 +98,7 @@ export default function Home({ searchInput }) {
       <h2 className="content__title">
         {category ? categories[category] : 'Вся'} піца
       </h2>
-      <ProductListing
-        pizzas={searchInput ? filteredPizza : pizzas}
-        isLoading={isLoading}
-      />
+      <ProductListing pizzas={pizzas} isLoading={isLoading} />
       <Pagination
         count={pizzaCount}
         setCurrentPage={setCurrentPage}
