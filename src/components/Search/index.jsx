@@ -1,18 +1,19 @@
-import { useContext } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { clear, setValue } from '../../redux/searchSlice';
 import searchIcon from '../../assets/img/search.png';
 import closeIcon from '../../assets/img/close.png';
-import { SearchContext } from 'App';
 import styles from './Search.module.scss';
 
 const Search = () => {
-  const { searchInput, setSearchInput } = useContext(SearchContext);
+  const search = useSelector(state => state.search.value);
+  const dispatch = useDispatch();
 
   const handleSearchInput = e => {
-    setSearchInput(e.target.value);
+    dispatch(setValue(e.target.value));
   };
 
   const onCleanBtnClick = () => {
-    setSearchInput('');
+    dispatch(clear());
   };
 
   return (
@@ -24,10 +25,10 @@ const Search = () => {
       />
       <input
         onChange={handleSearchInput}
-        value={searchInput}
+        value={search}
         placeholder="Пошук піци..."
       />
-      {searchInput && (
+      {search && (
         <button
           type="button"
           onClick={onCleanBtnClick}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { Categories, ProductListing, Sort } from 'components';
 import { categories, sortArray } from 'assets/static/filtersData';
@@ -8,13 +9,14 @@ const instance = axios.create({
   baseURL: 'https://632c18141aabd8373992d871.mockapi.io/',
 });
 
-export default function Home({ searchInput }) {
+export default function Home() {
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [category, setCategory] = useState(0);
   const [sort, setSort] = useState(sortArray[0]);
   const [pizzaCount, setPizzaCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const search = useSelector(state => state.search.value);
   const itemsPerPage = 8;
 
   const handlePizzaCategory = value => {
@@ -42,14 +44,14 @@ export default function Home({ searchInput }) {
   };
 
   useEffect(() => {
-    if (searchInput) {
+    if (search) {
       const order = getOrder(sort);
 
       setLoading(true);
       setCategory(0);
       instance
         .get(
-          `items?limit=${itemsPerPage}&page=1&sortBy=${sort.value}&order=${order}&search=${searchInput}`,
+          `items?limit=${itemsPerPage}&page=1&sortBy=${sort.value}&order=${order}&search=${search}`,
         )
         .then(data => {
           const { items, count } = data?.data;
@@ -58,10 +60,10 @@ export default function Home({ searchInput }) {
           setLoading(false);
         });
     }
-  }, [searchInput, sort]);
+  }, [search, sort]);
 
   useEffect(() => {
-    if (!searchInput) {
+    if (!search) {
       const categoryBlock = category > 0 ? `&category=${category}` : '';
       const order = getOrder(sort);
 
@@ -79,7 +81,7 @@ export default function Home({ searchInput }) {
         .catch(console.log);
       scrollToTop();
     }
-  }, [category, currentPage, sort, searchInput]);
+  }, [category, currentPage, sort, search]);
 
   useEffect(() => {
     scrollToTop();

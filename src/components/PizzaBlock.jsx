@@ -1,16 +1,23 @@
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { addItem } from 'redux/cartSlice';
 import '../scss/components/_pizza-block.scss';
 import '../scss/components/_button.scss';
 
 const PizzaBlock = props => {
-  const { name, price, imageUrl, sizes, types, description } = props;
-  const [quantity, setQuantity] = useState(0);
+  const { name, price, imageUrl, sizes, types, description, id } = props;
   const [activeType, setActiveType] = useState(types[0]);
   const [activeSize, setActiveSize] = useState(sizes[0]);
+  const cartItems = useSelector(state => state.cart.items);
+
+  const currentCartItem = cartItems.find(item => item.id === id);
+  const currentQuantityInCart = currentCartItem ? currentCartItem.quantity : 0;
+
+  const dispatch = useDispatch();
   const typeNames = ['тонке', 'традиційне'];
 
   const onQuantityClick = () => {
-    setQuantity(quantity + 1);
+    dispatch(addItem({ name, price, imageUrl, activeType, activeSize, id }));
   };
 
   const onTypeClick = type => {
@@ -71,7 +78,7 @@ const PizzaBlock = props => {
               />
             </svg>
             <span>Додати</span>
-            <i>{quantity}</i>
+            <i>{currentQuantityInCart}</i>
           </button>
         </div>
       </div>
