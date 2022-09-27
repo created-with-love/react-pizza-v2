@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { clear, setValue } from '../../redux/searchSlice';
+import { clear, setValue } from '../../redux/slices/searchSlice';
 import searchIcon from '../../assets/img/search.png';
 import closeIcon from '../../assets/img/close.png';
 import styles from './Search.module.scss';

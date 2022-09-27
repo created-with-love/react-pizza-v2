@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addItem } from 'redux/cartSlice';
+import { addItem } from 'redux/slices/cartSlice';
 import '../scss/components/_pizza-block.scss';
 import '../scss/components/_button.scss';
 
@@ -10,8 +10,13 @@ const PizzaBlock = props => {
   const [activeSize, setActiveSize] = useState(sizes[0]);
   const cartItems = useSelector(state => state.cart.items);
 
-  const currentCartItem = cartItems.find(item => item.id === id);
-  const currentQuantityInCart = currentCartItem ? currentCartItem.quantity : 0;
+  const currentCartItems = cartItems.filter(item => item.name === name);
+  const currentQuantityInCart =
+    currentCartItems.length > 0
+      ? currentCartItems.reduce((prev, cur) => {
+          return prev + cur.quantity;
+        }, 0)
+      : 0;
 
   const dispatch = useDispatch();
   const typeNames = ['тонке', 'традиційне'];

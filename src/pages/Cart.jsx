@@ -1,6 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { clearCart } from 'redux/cartSlice';
+import {
+  clearCart,
+  addItem,
+  deleteItem,
+  decreaseItemQuantity,
+} from 'redux/slices/cartSlice';
 import emptyCart from '../assets/img/empty-cart.png';
 
 const emptyCartMarkUp = () => {
@@ -29,6 +34,18 @@ export default function Cart() {
 
   const onClearCart = () => {
     dispatch(clearCart());
+  };
+
+  const onAddProductClick = item => {
+    dispatch(addItem(item));
+  };
+
+  const onDeleteProductClick = id => {
+    dispatch(deleteItem(id));
+  };
+
+  const onMinusProductClick = id => {
+    dispatch(decreaseItemQuantity(id));
   };
 
   return (
@@ -123,6 +140,7 @@ export default function Cart() {
                 imageUrl,
                 activeType,
                 activeSize,
+                description,
                 id,
                 quantity,
               }) => (
@@ -144,7 +162,11 @@ export default function Cart() {
                   </div>
                   <div className="cart__content-wrapper">
                     <div className="cart__item-count">
-                      <div className="button button--outline button--circle cart__item-count-minus">
+                      <button
+                        className="button button--outline button--circle cart__item-count-minus"
+                        type="button"
+                        onClick={() => onMinusProductClick(id)}
+                      >
                         <svg
                           width="10"
                           height="10"
@@ -161,9 +183,24 @@ export default function Cart() {
                             fill="#EB5A1E"
                           />
                         </svg>
-                      </div>
+                      </button>
                       <b>{quantity}</b>
-                      <div className="button button--outline button--circle cart__item-count-plus">
+                      <button
+                        className="button button--outline button--circle cart__item-count-plus"
+                        type="button"
+                        onClick={() =>
+                          onAddProductClick({
+                            name,
+                            price,
+                            imageUrl,
+                            activeType,
+                            activeSize,
+                            description,
+                            id,
+                            quantity,
+                          })
+                        }
+                      >
                         <svg
                           width="10"
                           height="10"
@@ -180,13 +217,17 @@ export default function Cart() {
                             fill="#EB5A1E"
                           />
                         </svg>
-                      </div>
+                      </button>
                     </div>
                     <div className="cart__item-price">
-                      <b>{price} ₴</b>
+                      <b>{price * quantity} ₴</b>
                     </div>
                     <div className="cart__item-remove">
-                      <div className="button button--outline button--circle">
+                      <button
+                        className="button button--outline button--circle"
+                        type="button"
+                        onClick={() => onDeleteProductClick(id)}
+                      >
                         <svg
                           width="10"
                           height="10"
@@ -203,7 +244,7 @@ export default function Cart() {
                             fill="#EB5A1E"
                           />
                         </svg>
-                      </div>
+                      </button>
                     </div>
                   </div>
                 </div>

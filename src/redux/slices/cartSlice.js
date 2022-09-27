@@ -23,12 +23,18 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addItem: (state, { payload }) => {
-      const isItemInCart = state.items.some(
-        pizza =>
+      let isSameIdInCart = false;
+      const isItemInCart = state.items.some(pizza => {
+        if (pizza.id === payload.id) {
+          isSameIdInCart = true;
+        }
+
+        return (
           pizza.id === payload.id &&
           pizza.activeType === payload.activeType &&
-          pizza.activeSize === payload.activeSize,
-      );
+          pizza.activeSize === payload.activeSize
+        );
+      });
 
       if (isItemInCart) {
         state.items = state.items.map(item => {
@@ -38,14 +44,37 @@ export const cartSlice = createSlice({
           return item;
         });
       } else {
-        state.items.push({ ...payload, quantity: 1 });
+        state.items.push({
+          ...payload,
+          quantity: 1,
+          id: isSameIdInCart ? payload.id + Date.now() : payload.id,
+        });
       }
 
       state.totalCount = getTotalCount(state);
       state.totalPrice = getTotalPrice(state);
     },
-    deleteItem: (state, { id }) => {
-      state.items = state.items.filter(pizza => pizza.id !== id);
+    deleteItem: (state, { payload }) => {
+      state.items = state.items.filter(pizza => pizza.id !== payload);
+      state.totalCount = getTotalCount(state);
+      state.totalPrice = getTotalPrice(state);
+    },
+    decreaseItemQuantity: (state, { payload }) => {
+      const currentItem = state.items.find(pizza => pizza.id === payload);
+      const currentItemQuantity = currentItem.quantity;
+
+      if (currentItemQuantity > 1) {
+        state.items = state.items.map(pizza => {
+          if (pizza.id === payload) {
+            return { ...pizza, quantity: pizza.quantity - 1 };
+          }
+
+          return pizza;
+        });
+      } else {
+        state.items = state.items.filter(pizza => pizza.id !== payload);
+      }
+
       state.totalCount = getTotalCount(state);
       state.totalPrice = getTotalPrice(state);
     },
@@ -68,6 +97,12 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { addItem, deleteItem, updateItem, clearCart } = cartSlice.actions;
+export const {
+  addItem,
+  deleteItem,
+  updateItem,
+  clearCart,
+  decreaseItemQuantity,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

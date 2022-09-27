@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { clear } from 'redux/searchSlice';
+import { clear } from 'redux/slices/searchSlice';
 import '../scss/components/_categories.scss';
 
 const Categories = ({ value, setValue, categories }) => {

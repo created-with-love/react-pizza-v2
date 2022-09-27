@@ -239,7 +239,6 @@ body {
       }
 
       @media (max-width: 850px) {
-        width: 20%;
         font-size: 16px;
       }
     }
@@ -290,8 +289,12 @@ body {
     }
 
     @media (max-width: 715px) {
+      &, &:last-of-type {
+        justify-content: center;
+      }
+
       &:nth-child(1) {
-        margin-bottom: 10px;
+        margin-bottom: 15px;
       }
     }
   }
