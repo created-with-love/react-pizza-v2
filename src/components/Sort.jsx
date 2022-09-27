@@ -1,14 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
-import '../scss/components/_sort.scss';
+import { useDispatch } from 'react-redux';
+import { setSortType } from 'redux/slices/filterSlice';
 import arrowTop from '../assets/img/arrow-top.svg';
 import arrowDown from '../assets/img/down-arrow.svg';
+import '../scss/components/_sort.scss';
 
-export default function Sort({ sort, setSort, sortArray }) {
+export default function Sort({ sort, sortArray }) {
   const [showPopup, setShowPopup] = useState(false);
   const sortRef = useRef();
+  const dispatch = useDispatch();
 
   const onSortItemClick = value => {
-    setSort(value);
+    dispatch(setSortType(value));
     setShowPopup(false);
   };
 

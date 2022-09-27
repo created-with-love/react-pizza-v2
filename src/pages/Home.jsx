@@ -1,26 +1,31 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { Categories, ProductListing, Sort } from 'components';
 import { categories, sortArray } from 'assets/static/filtersData';
 import Pagination from 'components/Pagination';
+import { setCategoryId } from 'redux/slices/filterSlice';
+import { addPizzas, setCount } from 'redux/slices/productDataSlice';
 
 const instance = axios.create({
   baseURL: 'https://632c18141aabd8373992d871.mockapi.io/',
 });
 
 export default function Home() {
-  const [pizzas, setPizzas] = useState([]);
   const [isLoading, setLoading] = useState(true);
-  const [category, setCategory] = useState(0);
-  const [sort, setSort] = useState(sortArray[0]);
-  const [pizzaCount, setPizzaCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const search = useSelector(state => state.search.value);
+
+  const { search, filter, productData } = useSelector(state => state);
+  const { value: searchValue } = search;
+  const { pizzas, pizzaCount } = productData;
+  const { categoryId, sort } = filter;
+
   const itemsPerPage = 8;
 
+  const dispatch = useDispatch();
+
   const handlePizzaCategory = value => {
-    setCategory(value);
+    dispatch(setCategoryId(value));
     setCurrentPage(1);
   };
 
@@ -44,27 +49,27 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (search) {
+    if (searchValue) {
       const order = getOrder(sort);
 
       setLoading(true);
-      setCategory(0);
+      dispatch(setCategoryId(0));
       instance
         .get(
-          `items?limit=${itemsPerPage}&page=1&sortBy=${sort.value}&order=${order}&search=${search}`,
+          `items?limit=${itemsPerPage}&page=1&sortBy=${sort.value}&order=${order}&search=${searchValue}`,
         )
         .then(data => {
           const { items, count } = data?.data;
-          setPizzas(items);
-          setPizzaCount(count);
+          dispatch(addPizzas(items));
+          dispatch(setCount(count));
           setLoading(false);
         });
     }
-  }, [search, sort]);
+  }, [searchValue, sort, dispatch]);
 
   useEffect(() => {
-    if (!search) {
-      const categoryBlock = category > 0 ? `&category=${category}` : '';
+    if (!searchValue) {
+      const categoryBlock = categoryId > 0 ? `&category=${categoryId}` : '';
       const order = getOrder(sort);
 
       setLoading(true);
@@ -74,14 +79,14 @@ export default function Home() {
         )
         .then(data => {
           const { items, count } = data?.data;
-          setPizzas(items);
-          setPizzaCount(count);
+          dispatch(addPizzas(items));
+          dispatch(setCount(count));
           setLoading(false);
         })
         .catch(console.log);
       scrollToTop();
     }
-  }, [category, currentPage, sort, search]);
+  }, [categoryId, currentPage, sort, searchValue, dispatch]);
 
   useEffect(() => {
     scrollToTop();
@@ -91,14 +96,14 @@ export default function Home() {
     <div className="container">
       <div className="content__top">
         <Categories
-          value={category}
+          value={categoryId}
           setValue={handlePizzaCategory}
           categories={categories}
         />
-        <Sort sort={sort} setSort={setSort} sortArray={sortArray} />
+        <Sort sort={sort} sortArray={sortArray} />
       </div>
       <h2 className="content__title">
-        {category ? categories[category] : 'Вся'} піца
+        {categoryId ? categories[categoryId] : 'Вся'} піца
       </h2>
       <ProductListing pizzas={pizzas} isLoading={isLoading} />
       <Pagination
