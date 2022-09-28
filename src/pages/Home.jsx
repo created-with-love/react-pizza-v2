@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Categories, ProductListing, Sort } from 'components';
 import { categories, sortArray } from 'assets/static/filtersData';
 import Pagination from 'components/Pagination';
-import { setCategoryId } from 'redux/slices/filterSlice';
+import { setCategoryId, setPage } from 'redux/slices/filterSlice';
 import { addPizzas, setCount } from 'redux/slices/productDataSlice';
 
 const instance = axios.create({
@@ -13,12 +13,11 @@ const instance = axios.create({
 
 export default function Home() {
   const [isLoading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
 
   const { search, filter, productData } = useSelector(state => state);
   const { value: searchValue } = search;
   const { pizzas, pizzaCount } = productData;
-  const { categoryId, sort } = filter;
+  const { categoryId, sort, currentPage } = filter;
 
   const itemsPerPage = 8;
 
@@ -26,7 +25,7 @@ export default function Home() {
 
   const handlePizzaCategory = value => {
     dispatch(setCategoryId(value));
-    setCurrentPage(1);
+    dispatch(setPage(1));
   };
 
   const getOrder = sortOrder => {
@@ -48,27 +47,32 @@ export default function Home() {
     });
   };
 
+  const setCurrentPage = page => {
+    dispatch(setPage(page));
+  };
+
   useEffect(() => {
     if (searchValue) {
-      const order = getOrder(sort);
-
+      const orderSortType = getOrder(sort);
+      
       setLoading(true);
       dispatch(setCategoryId(0));
+
       instance
-        .get(
-          `items?limit=${itemsPerPage}&page=1&sortBy=${sort.value}&order=${order}&search=${searchValue}`,
-        )
-        .then(data => {
-          const { items, count } = data?.data;
-          dispatch(addPizzas(items));
-          dispatch(setCount(count));
-          setLoading(false);
-        });
+      .get(
+        `items?limit=${itemsPerPage}&page=1&sortBy=${sort.value}&order=${orderSortType}&search=${searchValue}`,
+      )
+      .then(data => {
+        const { items, count } = data?.data;
+        dispatch(addPizzas(items));
+        dispatch(setCount(count));
+        setLoading(false);
+      });
     }
   }, [searchValue, sort, dispatch]);
 
   useEffect(() => {
-    if (!searchValue) {
+    if (!searchValue && currentPage) {
       const categoryBlock = categoryId > 0 ? `&category=${categoryId}` : '';
       const order = getOrder(sort);
 
