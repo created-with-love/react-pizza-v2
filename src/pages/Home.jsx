@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import qs from 'qs';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Categories, ProductListing, Sort } from 'components';
 import { categories, sortArray } from 'assets/static/filtersData';
 import Pagination from 'components/Pagination';
-import { setCategoryId, setPage } from 'redux/slices/filterSlice';
+import { setCategoryId, setFilters, setPage } from 'redux/slices/filterSlice';
 import { addPizzas, setCount } from 'redux/slices/productDataSlice';
 
 const instance = axios.create({
@@ -13,6 +15,9 @@ const instance = axios.create({
 
 export default function Home() {
   const [isLoading, setLoading] = useState(true);
+  const isSearch = useRef(false);
+  const isMounted = useRef(false);
+  const navigate = useNavigate();
 
   const { search, filter, productData } = useSelector(state => state);
   const { value: searchValue } = search;
@@ -51,6 +56,44 @@ export default function Home() {
     dispatch(setPage(page));
   };
 
+  const fetchPizzas = useCallback(
+    () => {
+      const categoryBlock = categoryId > 0 ? `&category=${categoryId}` : '';
+      const order = getOrder(sort);
+  
+      setLoading(true);
+      instance
+        .get(
+          `items?limit=${itemsPerPage}&page=${currentPage}&sortBy=${sort.value}${categoryBlock}&order=${order}`,
+        )
+        .then(data => {
+          const { items, count } = data?.data;
+          dispatch(addPizzas(items));
+          dispatch(setCount(count));
+          setLoading(false);
+        })
+        .catch(console.log);
+    },
+    [categoryId, currentPage, dispatch, sort],
+  );
+  
+  // save search filters in the redux
+  useEffect(() => {
+    if (window?.location?.search) {
+      const params = qs.parse(window.location.search.substring(1));
+
+      if (params?.sortOrder && params.sort === 'price') {
+        const sortItem = sortArray.find(item => item?.order === params.sortOrder && item.value === params.sort);
+        dispatch(setFilters({ ...params, sortItem }));
+      } else {
+        const sortItem = sortArray.find(item => item.value === params.sort);
+        dispatch(setFilters({ ...params, sortItem }));
+      }
+      isSearch.current = true;
+    }
+  }, []);
+
+  // fetch items with search
   useEffect(() => {
     if (searchValue) {
       const orderSortType = getOrder(sort);
@@ -71,26 +114,32 @@ export default function Home() {
     }
   }, [searchValue, sort, dispatch]);
 
+  // fetch items with first/new request
   useEffect(() => {
-    if (!searchValue && currentPage) {
-      const categoryBlock = categoryId > 0 ? `&category=${categoryId}` : '';
-      const order = getOrder(sort);
-
-      setLoading(true);
-      instance
-        .get(
-          `items?limit=${itemsPerPage}&page=${currentPage}&sortBy=${sort.value}${categoryBlock}&order=${order}`,
-        )
-        .then(data => {
-          const { items, count } = data?.data;
-          dispatch(addPizzas(items));
-          dispatch(setCount(count));
-          setLoading(false);
-        })
-        .catch(console.log);
+    if (!searchValue && !isSearch.current) {
+      fetchPizzas();
       scrollToTop();
     }
-  }, [categoryId, currentPage, sort, searchValue, dispatch]);
+
+    isSearch.current = false;
+  }, [fetchPizzas, searchValue]);
+
+  // save filters in the url params
+  useEffect(() => {
+    // to prevent changing url with filters on first render
+    if (isMounted.current) {
+      const queryString = qs.stringify({
+        sort: sort.value,
+        sortOrder: sort?.order ? sort.order : 'desc',
+        categoryId,
+        currentPage
+      });
+  
+      navigate(`?${queryString}`);
+    }
+
+    isMounted.current = true;
+  }, [categoryId, currentPage, sort, searchValue, navigate])
 
   useEffect(() => {
     scrollToTop();
@@ -114,6 +163,7 @@ export default function Home() {
         count={pizzaCount}
         setCurrentPage={setCurrentPage}
         itemsPerPage={itemsPerPage}
+        currentPage={currentPage - 1}
       />
     </div>
   );
