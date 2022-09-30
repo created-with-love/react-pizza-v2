@@ -67,17 +67,6 @@ export const cartSlice = createSlice({
       state.totalCount = getTotalCount(state);
       state.totalPrice = getTotalPrice(state);
     },
-    updateItem: (state, { payload }) => {
-      state.items = state.items.map(pizza => {
-        if (pizza.id === payload.id) {
-          return payload;
-        }
-
-        return pizza;
-      });
-      state.totalCount = getTotalCount(state);
-      state.totalPrice = getTotalPrice(state);
-    },
     clearCart: state => {
       state.items = [];
       state.totalCount = 0;
@@ -89,7 +78,6 @@ export const cartSlice = createSlice({
 export const {
   addItem,
   deleteItem,
-  updateItem,
   clearCart,
   decreaseItemQuantity,
 } = cartSlice.actions;

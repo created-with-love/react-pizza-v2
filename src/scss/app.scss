@@ -390,17 +390,18 @@ body {
   }
 
   &--empty {
-    margin: 20px auto 0;
+    margin: 75px auto 0;
     width: 100%;
     text-align: center;
 
     h2 {
       font-size: 32px;
-      margin-bottom: 10px;
+      font-weight: 600;
+      margin-bottom: 15px;
     }
 
     p {
-      font-size: 18px;
+      font-size: 20px;
       line-height: 145.4%;
       letter-spacing: 0.01em;
       color: #777777;
@@ -422,7 +423,7 @@ body {
       margin: 45px auto 60px;
 
       @media (max-width: 768px) {
-        margin: 15px auto;
+        margin: 15px auto 50px;
       }
     }
 
