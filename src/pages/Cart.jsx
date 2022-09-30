@@ -7,6 +7,7 @@ import {
   decreaseItemQuantity,
 } from 'redux/slices/cartSlice';
 import emptyCart from '../assets/img/empty-cart.png';
+import cartImage from '../assets/img/cart.svg';
 
 const emptyCartMarkUp = () => {
   return (

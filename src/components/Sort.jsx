@@ -19,18 +19,18 @@ export default function Sort({ sort, sortArray }) {
     setShowPopup(!showPopup);
   };
 
-  const handleOutsideClick = e => {
-    // e.path и его аналог для браузера firefox
-    const path =
-      e.path ||
-      (e.composedPath && e.composedPath()) ||
-      e.composedPath(e.target);
-    if (!path.includes(sortRef.current)) {
-      setShowPopup(false);
-    }
-  };
-
   useEffect(() => {
+    const handleOutsideClick = e => {
+      // e.path и его аналог для браузера firefox
+      const path =
+        e.path ||
+        (e.composedPath && e.composedPath()) ||
+        e.composedPath(e.target);
+      if (!path.includes(sortRef.current)) {
+        setShowPopup(false);
+      }
+    };
+    
     document.body.addEventListener('click', handleOutsideClick);
     return () => {
       document.body.removeEventListener('click', handleOutsideClick);

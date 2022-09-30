@@ -2,16 +2,12 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { Categories, ProductListing, Sort } from 'components';
 import { categories, sortArray } from 'assets/static/filtersData';
 import Pagination from 'components/Pagination';
 import { setCategoryId, setFilters, setPage } from 'redux/slices/filterSlice';
 import { addPizzas, setCount } from 'redux/slices/productDataSlice';
-
-const instance = axios.create({
-  baseURL: 'https://632c18141aabd8373992d871.mockapi.io/',
-});
+import { instance } from 'assets/static/axiosInstance';
 
 export default function Home() {
   const [isLoading, setLoading] = useState(true);

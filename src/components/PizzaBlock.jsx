@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { addItem } from 'redux/slices/cartSlice';
 import '../scss/components/_pizza-block.scss';
 import '../scss/components/_button.scss';
@@ -37,7 +38,9 @@ const PizzaBlock = props => {
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
         <img className="pizza-block__image" src={imageUrl} alt={name} />
-        <h4 className="pizza-block__title">{name}</h4>
+        <h4 className="pizza-block__title">
+        <Link to={`/product/${id}`} className="pizza-block__pdp-link">{name}</Link>
+        </h4>
         <p className="pizza-block__description">{description}</p>
         <div className="pizza-block__selector">
           <ul>
