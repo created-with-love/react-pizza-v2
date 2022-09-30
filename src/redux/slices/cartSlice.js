@@ -37,12 +37,7 @@ export const cartSlice = createSlice({
       });
 
       if (isItemInCart) {
-        state.items = state.items.map(item => {
-          if (item.id === payload.id) {
-            return { ...item, quantity: item.quantity + 1 };
-          }
-          return item;
-        });
+        state.items.find(pizza => pizza.id === payload.id).quantity++;
       } else {
         state.items.push({
           ...payload,
@@ -64,13 +59,7 @@ export const cartSlice = createSlice({
       const currentItemQuantity = currentItem.quantity;
 
       if (currentItemQuantity > 1) {
-        state.items = state.items.map(pizza => {
-          if (pizza.id === payload) {
-            return { ...pizza, quantity: pizza.quantity - 1 };
-          }
-
-          return pizza;
-        });
+        state.items.find(pizza => pizza.id === payload).quantity--;
       } else {
         state.items = state.items.filter(pizza => pizza.id !== payload);
       }

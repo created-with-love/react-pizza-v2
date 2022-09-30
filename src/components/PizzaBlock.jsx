@@ -86,7 +86,7 @@ const PizzaBlock = props => {
               />
             </svg>
             <span>Додати</span>
-            <i>{currentQuantityInCart}</i>
+            {currentQuantityInCart > 0 && <i>{currentQuantityInCart}</i>}
           </button>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import ItemsCarousel from 'react-items-carousel';
+import { Link } from 'react-router-dom';
 import styles from './ProductRecommendations.module.scss';
 
 function ProductRecommendations({items}) {
@@ -50,9 +51,9 @@ function ProductRecommendations({items}) {
                   : styles.image
               }
             />
-            <div className={styles.infoWrapper}>
+            <Link className={styles.infoWrapper} to={`/product/${id}`}>
               <h4>{name}</h4> <span>Від {price} $</span>
-            </div>
+            </Link>
           </div>
         ))}
       </ItemsCarousel>
