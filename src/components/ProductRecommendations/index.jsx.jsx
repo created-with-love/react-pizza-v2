@@ -52,7 +52,7 @@ function ProductRecommendations({items}) {
               }
             />
             <Link className={styles.infoWrapper} to={`/product/${id}`}>
-              <h4>{name}</h4> <span>Від {price} $</span>
+              <h4>{name}</h4> <span>Від {price} ₴</span>
             </Link>
           </div>
         ))}

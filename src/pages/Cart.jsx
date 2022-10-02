@@ -154,7 +154,7 @@ export default function Cart() {
                       />
                     </div>
                     <div className="cart__item-info">
-                      <h3>{name}</h3>
+                      <Link to={`/product/${id}`}><h3>{name}</h3></Link>
                       <p>
                         {typeNames[activeType]}, {activeSize} см.
                       </p>
