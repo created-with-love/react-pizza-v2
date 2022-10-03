@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
 import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 import { clear, setValue } from '../../redux/slices/searchSlice';
 import searchIcon from '../../assets/img/search.png';
 import closeIcon from '../../assets/img/close.png';
@@ -9,15 +10,22 @@ import debounce from 'lodash.debounce';
 const Search = () => {
   const [searchValue, setSearchValue] = useState('');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
   const inputRef = useRef();
 
   const setStoreSearchValue = useCallback(
     debounce((string) => {
       dispatch(setValue(string));
-    }, 300), []
+    }, 400), []
   );
 
   const onChangeInput = e => {
+    const path = window?.location?.pathname;
+      if (path.includes('/product') || path.includes('/cart')) {
+        navigate('/');
+      }
+    
     setSearchValue(e.target.value);
     setStoreSearchValue(e.target.value);
   };
