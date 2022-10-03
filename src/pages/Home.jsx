@@ -1,23 +1,23 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
 import { Categories, ProductListing, Sort } from 'components';
 import { categories, sortArray } from 'assets/static/filtersData';
 import Pagination from 'components/Pagination';
+import Error from 'components/Error';
 import { setCategoryId, setFilters, setPage } from 'redux/slices/filterSlice';
-import { addPizzas, setCount } from 'redux/slices/productDataSlice';
+import { fetchPizzas } from 'redux/slices/productDataSlice';
 import { instance } from 'assets/static/axiosInstance';
 
 export default function Home() {
-  const [isLoading, setLoading] = useState(true);
   const isSearch = useRef(false);
   const isMounted = useRef(false);
   const navigate = useNavigate();
 
   const { search, filter, productData } = useSelector(state => state);
   const { value: searchValue } = search;
-  const { pizzas, pizzaCount } = productData;
+  const { pizzas, pizzaCount, status } = productData;
   const { categoryId, sort, currentPage } = filter;
 
   const itemsPerPage = 8;
@@ -52,25 +52,13 @@ export default function Home() {
     dispatch(setPage(page));
   };
 
-  const fetchPizzas = useCallback(
-    () => {
+  const getPizzas = useCallback(
+    async (currentPage, searchQuery = '') => {
       const categoryBlock = categoryId > 0 ? `&category=${categoryId}` : '';
       const order = getOrder(sort);
-  
-      setLoading(true);
-      instance
-        .get(
-          `items?limit=${itemsPerPage}&page=${currentPage}&sortBy=${sort.value}${categoryBlock}&order=${order}`,
-        )
-        .then(data => {
-          const { items, count } = data?.data;
-          dispatch(addPizzas(items));
-          dispatch(setCount(count));
-          setLoading(false);
-        })
-        .catch(console.log);
+      dispatch(fetchPizzas({instance, itemsPerPage, currentPage, sort, categoryBlock, order, searchQuery}));
     },
-    [categoryId, currentPage, dispatch, sort],
+    [categoryId, dispatch, sort],
   );
   
   // save search filters in the redux
@@ -92,33 +80,21 @@ export default function Home() {
   // fetch items with search
   useEffect(() => {
     if (searchValue) {
-      const orderSortType = getOrder(sort);
-      
-      setLoading(true);
+      const searchQuery = `&search=${searchValue}`;
       dispatch(setCategoryId(0));
-
-      instance
-      .get(
-        `items?limit=${itemsPerPage}&page=1&sortBy=${sort.value}&order=${orderSortType}&search=${searchValue}`,
-      )
-      .then(data => {
-        const { items, count } = data?.data;
-        dispatch(addPizzas(items));
-        dispatch(setCount(count));
-        setLoading(false);
-      });
+      getPizzas(1, searchQuery);
     }
-  }, [searchValue, sort, dispatch]);
+  }, [searchValue, sort, dispatch, getPizzas]);
 
   // fetch items with first/new request
   useEffect(() => {
     if (!searchValue && !isSearch.current) {
-      fetchPizzas();
+      getPizzas(currentPage);
       scrollToTop();
     }
 
     isSearch.current = false;
-  }, [fetchPizzas, searchValue]);
+  }, [getPizzas, searchValue, currentPage]);
 
   // save filters in the url params
   useEffect(() => {
@@ -151,16 +127,25 @@ export default function Home() {
         />
         <Sort sort={sort} sortArray={sortArray} />
       </div>
-      <h2 className="content__title">
-        {categoryId ? categories[categoryId] : 'Вся'} піца
-      </h2>
-      <ProductListing pizzas={pizzas} isLoading={isLoading} />
-      <Pagination
-        count={pizzaCount}
-        setCurrentPage={setCurrentPage}
-        itemsPerPage={itemsPerPage}
-        currentPage={currentPage - 1}
-      />
+
+      {status === 'error' ? (
+        <Error />
+      ) : (
+        <>
+          <h2 className="content__title">
+            {categoryId ? categories[categoryId] : 'Вся'} піца
+          </h2>
+          <ProductListing pizzas={pizzas} isLoading={status === 'loading'} />
+        </>
+      )}
+      {pizzas.length > 0 && (
+        <Pagination
+          count={pizzaCount}
+          setCurrentPage={setCurrentPage}
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage - 1}
+        />
+      )}
     </div>
   );
 }
