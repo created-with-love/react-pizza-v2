@@ -15,10 +15,12 @@ export default function Home() {
   const isMounted = useRef(false);
   const navigate = useNavigate();
 
-  const { search, filter, productData } = useSelector(state => state);
-  const { value: searchValue } = search;
-  const { pizzas, pizzaCount, status } = productData;
-  const { categoryId, sort, currentPage } = filter;
+  const {
+    search: { value: searchValue },
+    filter: { categoryId, sort, currentPage },
+    productData: { pizzas, pizzaCount, status },
+  } = useSelector(state => state);
+    console.log("🚀 ~ file: Home.jsx ~ line 23 ~ Home ~ status", {status, pizzas, searchValue});
 
   const itemsPerPage = 8;
 
@@ -56,18 +58,43 @@ export default function Home() {
     async (currentPage, searchQuery = '') => {
       const categoryBlock = categoryId > 0 ? `&category=${categoryId}` : '';
       const order = getOrder(sort);
-      dispatch(fetchPizzas({instance, itemsPerPage, currentPage, sort, categoryBlock, order, searchQuery}));
+
+      // to prevent double fetch for search
+      if (searchQuery && categoryBlock) {
+        return;
+      }
+
+      dispatch(
+        fetchPizzas({
+          instance,
+          itemsPerPage,
+          currentPage,
+          sort,
+          categoryBlock,
+          order,
+          searchQuery,
+        }),
+      );
     },
     [categoryId, dispatch, sort],
   );
-  
+
+  useEffect(() => {
+    if (searchValue && status === 'success' && pizzas?.length === 0) {
+      navigate('/404');
+    }
+  }, [status, pizzas, navigate, searchValue]);  
+
   // save search filters in the redux
   useEffect(() => {
     if (window?.location?.search) {
       const params = qs.parse(window.location.search.substring(1));
 
       if (params?.sortOrder && params.sort === 'price') {
-        const sortItem = sortArray.find(item => item?.order === params.sortOrder && item.value === params.sort);
+        const sortItem = sortArray.find(
+          item =>
+            item?.order === params.sortOrder && item.value === params.sort,
+        );
         dispatch(setFilters({ ...params, sortItem }));
       } else {
         const sortItem = sortArray.find(item => item.value === params.sort);
@@ -75,7 +102,7 @@ export default function Home() {
       }
       isSearch.current = true;
     }
-  }, []);
+  }, [dispatch]);
 
   // fetch items with search
   useEffect(() => {
@@ -104,14 +131,14 @@ export default function Home() {
         sort: sort.value,
         sortOrder: sort?.order ? sort.order : 'desc',
         categoryId,
-        currentPage
+        currentPage,
       });
-  
+
       navigate(`?${queryString}`);
     }
 
     isMounted.current = true;
-  }, [categoryId, currentPage, sort, searchValue, navigate])
+  }, [categoryId, currentPage, sort, searchValue, navigate]);
 
   useEffect(() => {
     scrollToTop();

@@ -1,17 +1,24 @@
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import logo from '../assets/img/pizza-logo.svg';
 import cartImg from '../assets/img/cart.svg';
 import Search from './Search';
+import { cartSelector } from 'redux/slices/cartSlice';
+import { clear } from 'redux/slices/searchSlice';
 import '../scss/components/_header.scss';
 
 const Header = () => {
-  const { totalPrice, totalCount } = useSelector(state => state.cart);
+  const { totalPrice, totalCount } = useSelector(cartSelector);
+  const dispatch = useDispatch();
+
+  const onLogoClick = () => {
+    dispatch(clear());
+  };
 
   return (
     <div className="header">
       <div className="container">
-        <Link to="/">
+        <Link to="/" onClick={onLogoClick}>
           <div className="header__logo">
             <img width="38" src={logo} alt="Pizza logo" />
             <div>

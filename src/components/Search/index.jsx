@@ -1,5 +1,5 @@
-import { useState, useRef, useCallback } from 'react'
-import { useDispatch } from 'react-redux';
+import { useState, useRef, useCallback, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { clear, setValue } from '../../redux/slices/searchSlice';
 import searchIcon from '../../assets/img/search.png';
@@ -11,6 +11,8 @@ const Search = () => {
   const [searchValue, setSearchValue] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const {value} = useSelector(state => state.search);
   
   const inputRef = useRef();
 
@@ -19,6 +21,18 @@ const Search = () => {
       dispatch(setValue(string));
     }, 400), []
   );
+
+  useEffect(() => {
+    if (!searchValue && value) {
+      setSearchValue(value);
+    }
+  }, [searchValue, value]);
+
+  useEffect(() => {
+    if (!value) {
+      setSearchValue('');
+    }
+  }, [value]);
 
   const onChangeInput = e => {
     const path = window?.location?.pathname;

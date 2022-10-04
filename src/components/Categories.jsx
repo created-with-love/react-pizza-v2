@@ -7,8 +7,8 @@ const Categories = ({ value, setValue, categories }) => {
 
   const onClickCategory = e => {
     const index = Number(e.target.dataset.index);
-    setValue(index);
     dispatch(clear());
+    setValue(index);
   };
 
   return (

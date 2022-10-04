@@ -5,6 +5,7 @@ import {
   addItem,
   deleteItem,
   decreaseItemQuantity,
+  cartSelector,
 } from 'redux/slices/cartSlice';
 import emptyCart from '../assets/img/empty-cart.png';
 
@@ -28,7 +29,7 @@ const emptyCartMarkUp = () => {
 };
 
 export default function Cart() {
-  const { items, totalPrice, totalCount } = useSelector(state => state.cart);
+  const { items, totalPrice, totalCount } = useSelector(cartSelector);
   const typeNames = ['тонке', 'традиційне'];
   const dispatch = useDispatch();
 

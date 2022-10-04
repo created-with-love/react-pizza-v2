@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { addItem } from 'redux/slices/cartSlice';
+import { addItem, cartItemsSelector } from 'redux/slices/cartSlice';
 import '../scss/components/_pizza-block.scss';
 import '../scss/components/_button.scss';
 
@@ -9,7 +9,7 @@ const PizzaBlock = props => {
   const { name, price, imageUrl, sizes, types, description, id } = props;
   const [activeType, setActiveType] = useState(types[0]);
   const [activeSize, setActiveSize] = useState(sizes[0]);
-  const cartItems = useSelector(state => state.cart.items);
+  const cartItems = useSelector(cartItemsSelector);
 
   const currentCartItems = cartItems.filter(item => item.name === name);
   const currentQuantityInCart =

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addItem } from 'redux/slices/cartSlice';
+import { addItem, cartItemsSelector } from 'redux/slices/cartSlice';
 import 'scss/components/_pizza-block.scss';
 import 'scss/components/_button.scss';
 import styles from './Product.module.scss';
@@ -9,7 +9,7 @@ const Product = ({product}) => {
   const { name, price, imageUrl, sizes, types, description, id } = product;
   const [activeType, setActiveType] = useState(types[0]);
   const [activeSize, setActiveSize] = useState(sizes[0]);
-  const cartItems = useSelector(state => state.cart.items);
+  const cartItems = useSelector(cartItemsSelector);
 
   const currentCartItems = cartItems.filter(item => item.name === name);
   const currentQuantityInCart =
