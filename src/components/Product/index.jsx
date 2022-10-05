@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addItem, cartItemsSelector } from 'redux/slices/cartSlice';
 import 'scss/components/_pizza-block.scss';
@@ -21,6 +21,10 @@ const Product = ({product}) => {
 
   const dispatch = useDispatch();
   const typeNames = ['тонке', 'традиційне'];
+
+  useEffect(() => {
+    setActiveSize(sizes[0]);
+  }, [sizes]);
 
   const onQuantityClick = () => {
     dispatch(addItem({ name, price, imageUrl, activeType, activeSize, id }));
@@ -56,7 +60,7 @@ const Product = ({product}) => {
               ))}
             </ul>
             <ul>
-              {sizes.map((size, i) => (
+              {sizes.map(size => (
                 <li
                   key={`${name}-${size}`}
                   className={activeSize === size ? styles.active : ''}

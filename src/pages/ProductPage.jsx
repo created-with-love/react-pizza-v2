@@ -48,7 +48,7 @@ export default function ProductPage() {
   return (
     <div className="container">
       {Object.values(product).length > 0 && !loading && <Product product={product} />}
-      {Object.values(product).length > 0 && !loading && <ProductRecommendations items={currentCategoryItems} />}
+      {pizzas.length > 0 && !loading && <ProductRecommendations items={currentCategoryItems} />}
       {loading && <ClipLoader color={"#ffffff"} loading={loading} cssOverride={override} size={250} />}
     </div>
   );

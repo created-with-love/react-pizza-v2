@@ -20,7 +20,6 @@ export default function Home() {
     filter: { categoryId, sort, currentPage },
     productData: { pizzas, pizzaCount, status },
   } = useSelector(state => state);
-    console.log("🚀 ~ file: Home.jsx ~ line 23 ~ Home ~ status", {status, pizzas, searchValue});
 
   const itemsPerPage = 8;
 

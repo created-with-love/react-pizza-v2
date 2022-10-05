@@ -69,6 +69,11 @@
         }
       }
     }
+
+    @media (min-width: 1000px) {
+      width: 400px;
+      align-self: center;
+    }
   }
 
   &__bottom {
@@ -80,6 +85,11 @@
     & .button {
       display: flex;
       align-items: center;
+    }
+
+    @media (min-width: 1000px) {
+      width: 400px;
+      align-self: center;
     }
   }
 
