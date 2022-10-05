@@ -37,10 +37,12 @@ const PizzaBlock = props => {
   return (
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
+      <Link to={`/product/${id}`} className="pizza-block__pdp-link">
         <img className="pizza-block__image" src={imageUrl} alt={name} />
         <h4 className="pizza-block__title">
-        <Link to={`/product/${id}`} className="pizza-block__pdp-link">{name}</Link>
+        {name}
         </h4>
+        </Link>
         <p className="pizza-block__description">{description}</p>
         <div className="pizza-block__selector">
           <ul>

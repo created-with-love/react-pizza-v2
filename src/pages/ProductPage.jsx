@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import Product from 'components/Product';
 import { instance } from 'assets/static/axiosInstance';
 import ProductRecommendations from 'components/ProductRecommendations/index.jsx';
-import { fetchPizzas, selectPizzas } from 'redux/slices/productDataSlice';
 
 const override = {
   display: "block",
@@ -15,40 +13,47 @@ const override = {
 
 export default function ProductPage() {
   const [product, setProduct] = useState({});
+  const [carouselItems, setCarouselItems] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const dispatch = useDispatch();
-
   const params = useParams();
-  const pizzas = useSelector(selectPizzas);
+  const navigate = useNavigate();
 
-  const currentCategoryItems = pizzas.filter(item => item.category === product.category && item.id !== product.id);
-
+  // get current pizza data
   useEffect(() => {
-    const params = {
-      instance,
-      itemsPerPage: 25,
-      currentPage: 1,
-      sort: { value: 'rating' },
-      categoryBlock: '',
-      order: 'desc',
-      searchQuery: '',
-    };
-    dispatch(fetchPizzas(params));
-    setLoading(false);
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (params && params.productId && pizzas.length > 0) {
-      const item = pizzas.find(obj => Number(obj.id) === Number(params.productId));
-      setProduct(item || {});
+    const fetchPizza = async () => {
+      try {
+        const {data} = await instance.get('/items/' + params.productId);
+        setProduct(data.items);
+      } catch (e) {
+        alert('Такої піци не знайдено');
+        navigate('/')
+      } finally {
+        setLoading(false)
+      }
     }
-  }, [pizzas, params])
+    fetchPizza();
+  }, [params, navigate]);
+
+  // get product recommendations data
+  useEffect(() => {
+    if (Object.values(product).length > 0) {
+      const {category} = product;
+      const fetchPizzaRecommendations = async () => {
+        try {
+          const {data} = await instance.get(`/items?category=${category}`);
+          setCarouselItems(data.items.filter(obj => Number(obj.id) !== Number(product.id)));
+        } catch (e) {
+          console.log('Fetch error:', e);
+        }
+      }
+      fetchPizzaRecommendations();
+    }
+  }, [product])
 
   return (
     <div className="container">
       {Object.values(product).length > 0 && !loading && <Product product={product} />}
-      {pizzas.length > 0 && !loading && <ProductRecommendations items={currentCategoryItems} />}
+      {carouselItems.length > 0 && !loading && <ProductRecommendations items={carouselItems} />}
       {loading && <ClipLoader color={"#ffffff"} loading={loading} cssOverride={override} size={250} />}
     </div>
   );
