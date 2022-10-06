@@ -4,20 +4,21 @@ import { useNavigate } from "react-router-dom";
 import { clear, setValue } from '../../redux/slices/searchSlice';
 import searchIcon from '../../assets/img/search.png';
 import closeIcon from '../../assets/img/close.png';
-import styles from './Search.module.scss';
 import debounce from 'lodash.debounce';
+import { IState } from 'types';
+import styles from './Search.module.scss';
 
 const Search = () => {
   const [searchValue, setSearchValue] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const {value} = useSelector(state => state.search);
+  const {value} = useSelector((state: IState) => state.search);
   
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const setStoreSearchValue = useCallback(
-    debounce((string) => {
+    debounce((string: string) => {
       dispatch(setValue(string));
     }, 400), []
   );
@@ -34,7 +35,7 @@ const Search = () => {
     }
   }, [value]);
 
-  const onChangeInput = e => {
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const path = window?.location?.pathname;
       if (path.includes('/product') || path.includes('/cart')) {
         navigate('/');
@@ -47,7 +48,10 @@ const Search = () => {
   const onCleanBtnClick = () => {
     dispatch(clear());
     setSearchValue('');
-    inputRef.current.focus();
+
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
 
   return (

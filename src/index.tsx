@@ -12,16 +12,13 @@ store.subscribe(
   }, 1000),
 );
 
-const rootElem = document.getElementById('root');
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
-if (rootElem) {
-  const root = ReactDOM.createRoot(rootElem);
+root.render(
+  <BrowserRouter>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </BrowserRouter>
+);
 
-  root.render(
-    <BrowserRouter>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </BrowserRouter>
-  );
-}

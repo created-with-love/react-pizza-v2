@@ -1,9 +1,14 @@
 import {useState, useEffect} from 'react'
 import ItemsCarousel from 'react-items-carousel';
 import { Link } from 'react-router-dom';
+import { IProduct } from 'types';
 import styles from './ProductRecommendations.module.scss';
 
-function ProductRecommendations({items}) {
+interface IProductRecommendationsProps {
+  items: IProduct[]
+}
+
+function ProductRecommendations({items}: IProductRecommendationsProps) {
   const [activeItemIndex, setActiveItemIndex] = useState(0);
   const [width, setWidth] = useState(window.innerWidth);
   const chevronWidth = 40;

@@ -4,18 +4,23 @@ import { addItem, cartItemsSelector } from 'redux/slices/cartSlice';
 import 'scss/components/_pizza-block.scss';
 import 'scss/components/_button.scss';
 import styles from './Product.module.scss';
+import { ICartItem, IProduct } from 'types';
 
-const Product = ({product}) => {
+interface IProductProps {
+  product: IProduct
+}
+
+const Product = ({ product }: IProductProps): JSX.Element => {
   const { name, price, imageUrl, sizes, types, description, id } = product;
   const [activeType, setActiveType] = useState(types[0]);
   const [activeSize, setActiveSize] = useState(sizes[0]);
-  const cartItems = useSelector(cartItemsSelector);
+  const cartItems: ICartItem[] = useSelector(cartItemsSelector);
 
-  const currentCartItems = cartItems.filter(item => item.name === name);
+  const currentCartItems = cartItems.filter((item: ICartItem) => item.name === name);
   const currentQuantityInCart =
     currentCartItems.length > 0
-      ? currentCartItems.reduce((prev, cur) => {
-          return prev + cur.quantity;
+      ? currentCartItems.reduce((prev: number, cur: ICartItem) => {
+          return prev + cur.quantity || 0;
         }, 0)
       : 0;
 
@@ -30,11 +35,11 @@ const Product = ({product}) => {
     dispatch(addItem({ name, price, imageUrl, activeType, activeSize, id }));
   };
 
-  const onTypeClick = type => {
+  const onTypeClick = (type: number): void => {
     setActiveType(type);
   };
 
-  const onSizeClick = size => {
+  const onSizeClick = (size: number): void => {
     setActiveSize(size);
   };
 

@@ -8,9 +8,10 @@ import { clear } from 'redux/slices/searchSlice';
 import '../scss/components/_header.scss';
 
 const Header = () => {
-  const { totalPrice, totalCount } = useSelector(cartSelector);
+  const { totalPrice, totalCount }: { totalPrice: number; totalCount: number } =
+    useSelector(cartSelector);
   const dispatch = useDispatch();
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
 
   const onLogoClick = () => {
     dispatch(clear());
@@ -30,17 +31,19 @@ const Header = () => {
         </Link>
         <Search />
         <div className="header__cart">
-          {pathname !== '/cart' && <Link to="/cart" className="button button--cart">
-            <span>{totalPrice} ₴</span>
-            <div className="button__delimiter"></div>
-            <img
-              width="18"
-              src={cartImg}
-              alt="Cart icon"
-              className="header__cart-icon"
-            />
-            <span>{totalCount}</span>
-          </Link>}
+          {pathname !== '/cart' && (
+            <Link to="/cart" className="button button--cart">
+              <span>{totalPrice} ₴</span>
+              <div className="button__delimiter"></div>
+              <img
+                width="18"
+                src={cartImg}
+                alt="Cart icon"
+                className="header__cart-icon"
+              />
+              <span>{totalCount}</span>
+            </Link>
+          )}
         </div>
       </div>
     </div>

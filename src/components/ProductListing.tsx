@@ -1,7 +1,13 @@
+import { IProduct } from 'types';
 import PizzaBlock from './PizzaBlock';
 import Skeleton from './Skeleton';
 
-export default function ProductListing({ pizzas, isLoading }) {
+interface IProductListingProps {
+  pizzas: IProduct[];
+  isLoading: boolean
+}
+
+export default function ProductListing({ pizzas, isLoading }: IProductListingProps) {
   return (
     <div className="content__items">
       {isLoading

@@ -1,16 +1,28 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { setSortType } from 'redux/slices/filterSlice';
+import { ISort } from 'types';
 import arrowTop from '../assets/img/arrow-top.svg';
 import arrowDown from '../assets/img/down-arrow.svg';
 import '../scss/components/_sort.scss';
 
-export default function Sort({ sort, sortArray }) {
+interface ISortProps {
+  sort: ISort,
+  sortArray: ISort[]
+}
+
+type M = MouseEvent & {
+   path?: HTMLElement []; 
+   composedPath: (tar?: HTMLElement) => EventTarget[]; 
+   target: any; 
+}
+
+export default function Sort({ sort, sortArray }: ISortProps) {
   const [showPopup, setShowPopup] = useState(false);
-  const sortRef = useRef();
+  const sortRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
-  const onSortItemClick = value => {
+  const onSortItemClick = (value: ISort) => {
     dispatch(setSortType(value));
     setShowPopup(false);
   };
@@ -20,13 +32,13 @@ export default function Sort({ sort, sortArray }) {
   };
 
   useEffect(() => {
-    const handleOutsideClick = e => {
+    const handleOutsideClick = (e: M) => {
       // e.path и его аналог для браузера firefox
       const path =
         e.path ||
         (e.composedPath && e.composedPath()) ||
         e.composedPath(e.target);
-      if (!path.includes(sortRef.current)) {
+      if (sortRef.current && !path.includes(sortRef.current)) {
         setShowPopup(false);
       }
     };

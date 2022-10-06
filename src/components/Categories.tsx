@@ -2,11 +2,16 @@ import { useDispatch } from 'react-redux';
 import { clear } from 'redux/slices/searchSlice';
 import '../scss/components/_categories.scss';
 
-const Categories = ({ value, setValue, categories }) => {
+interface ICategoriesProps {
+  value: number;
+  setValue: (value: number) => void;
+  categories: string[]
+}
+
+const Categories = ({ value, setValue, categories }: ICategoriesProps) => {
   const dispatch = useDispatch();
 
-  const onClickCategory = e => {
-    const index = Number(e.target.dataset.index);
+  const onClickCategory = (index: number) => {
     dispatch(clear());
     setValue(index);
   };
@@ -16,7 +21,7 @@ const Categories = ({ value, setValue, categories }) => {
       <ul>
         {categories.map((name, index) => (
           <li
-            onClick={onClickCategory}
+            onClick={() => onClickCategory(index)}
             className={value === index ? 'active' : ''}
             data-index={index}
             key={name}

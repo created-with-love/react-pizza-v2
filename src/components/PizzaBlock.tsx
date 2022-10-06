@@ -2,14 +2,16 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { addItem, cartItemsSelector } from 'redux/slices/cartSlice';
+import { ICartItem, IProduct } from 'types';
 import '../scss/components/_pizza-block.scss';
 import '../scss/components/_button.scss';
 
-const PizzaBlock = props => {
+
+const PizzaBlock = (props: IProduct) => {
   const { name, price, imageUrl, sizes, types, description, id } = props;
   const [activeType, setActiveType] = useState(types[0]);
   const [activeSize, setActiveSize] = useState(sizes[0]);
-  const cartItems = useSelector(cartItemsSelector);
+  const cartItems: ICartItem[] = useSelector(cartItemsSelector);
 
   const currentCartItems = cartItems.filter(item => item.name === name);
   const currentQuantityInCart =
@@ -26,11 +28,11 @@ const PizzaBlock = props => {
     dispatch(addItem({ name, price, imageUrl, activeType, activeSize, id }));
   };
 
-  const onTypeClick = type => {
+  const onTypeClick = (type: number) => {
     setActiveType(type);
   };
 
-  const onSizeClick = size => {
+  const onSizeClick = (size: number) => {
     setActiveSize(size);
   };
 
@@ -57,7 +59,7 @@ const PizzaBlock = props => {
             ))}
           </ul>
           <ul>
-            {sizes.map((size, i) => (
+            {sizes.map(size => (
               <li
                 key={`${name}-${size}`}
                 className={activeSize === size ? 'active' : ''}
