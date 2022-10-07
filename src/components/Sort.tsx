@@ -17,7 +17,7 @@ type M = MouseEvent & {
    target: any; 
 }
 
-export default function Sort({ sort, sortArray }: ISortProps) {
+const Sort: React.FC<ISortProps> = ({ sort, sortArray }) => {
   const [showPopup, setShowPopup] = useState(false);
   const sortRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
@@ -85,4 +85,6 @@ export default function Sort({ sort, sortArray }: ISortProps) {
       )}
     </div>
   );
-}
+};
+
+export default Sort;

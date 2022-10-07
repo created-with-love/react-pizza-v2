@@ -7,7 +7,7 @@ interface IProductListingProps {
   isLoading: boolean
 }
 
-export default function ProductListing({ pizzas, isLoading }: IProductListingProps) {
+const ProductListing: React.FC<IProductListingProps> = ({ pizzas, isLoading }) => {
   return (
     <div className="content__items">
       {isLoading
@@ -15,4 +15,6 @@ export default function ProductListing({ pizzas, isLoading }: IProductListingPro
         : pizzas.map(pizza => <PizzaBlock key={pizza.id} {...pizza} />)}
     </div>
   );
-}
+};
+
+export default ProductListing;

@@ -2,15 +2,15 @@ import { useEffect, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
-import { Categories, ProductListing, Sort } from 'components';
-import { categories, sortArray } from 'assets/static/filtersData';
-import Pagination from 'components/Pagination';
-import Error from 'components/Error';
 import { setCategoryId, setFilters, setPage } from 'redux/slices/filterSlice';
 import { fetchPizzas } from 'redux/slices/productDataSlice';
-import { instance } from 'assets/static/axiosInstance';
 
-export default function Home() {
+import { Categories, ProductListing, Sort, Pagination, Error } from 'components';
+import { categories, sortArray } from 'assets/static/filtersData';
+import { instance } from 'assets/static/axiosInstance';
+import { ISort, IState } from 'types';
+
+const Home: React.FC = () => {
   const isSearch = useRef(false);
   const isMounted = useRef(false);
   const navigate = useNavigate();
@@ -19,18 +19,18 @@ export default function Home() {
     search: { value: searchValue },
     filter: { categoryId, sort, currentPage },
     productData: { pizzas, pizzaCount, status },
-  } = useSelector(state => state);
+  } = useSelector((state: IState) => state);
 
   const itemsPerPage = 8;
 
   const dispatch = useDispatch();
 
-  const handlePizzaCategory = value => {
+  const handlePizzaCategory = (value: number) => {
     dispatch(setCategoryId(value));
     dispatch(setPage(1));
   };
 
-  const getOrder = sortOrder => {
+  const getOrder = (sortOrder: ISort) => {
     switch (sortOrder.value) {
       case 'price':
         return sortOrder.order;
@@ -49,12 +49,12 @@ export default function Home() {
     });
   };
 
-  const setCurrentPage = page => {
+  const setCurrentPage = (page: number) => {
     dispatch(setPage(page));
   };
 
   const getPizzas = useCallback(
-    async (currentPage, searchQuery = '') => {
+    async (currentPage: number, searchQuery = '') => {
       const categoryBlock = categoryId > 0 ? `&category=${categoryId}` : '';
       const order = getOrder(sort);
 
@@ -64,6 +64,8 @@ export default function Home() {
       }
 
       dispatch(
+        // TODO
+        // @ts-ignore
         fetchPizzas({
           instance,
           itemsPerPage,
@@ -72,7 +74,7 @@ export default function Home() {
           categoryBlock,
           order,
           searchQuery,
-        }),
+        })
       );
     },
     [categoryId, dispatch, sort],
@@ -175,3 +177,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default Home;

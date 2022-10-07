@@ -8,6 +8,7 @@ import {
   cartSelector,
 } from 'redux/slices/cartSlice';
 import emptyCart from '../assets/img/empty-cart.png';
+import { ICartItem } from 'types';
 
 const emptyCartMarkUp = () => {
   return (
@@ -28,8 +29,13 @@ const emptyCartMarkUp = () => {
   );
 };
 
-export default function Cart() {
-  const { items, totalPrice, totalCount } = useSelector(cartSelector);
+const Cart: React.FC = () => {
+  const {
+    items,
+    totalPrice,
+    totalCount,
+  }: { items: ICartItem[]; totalPrice: number; totalCount: number } =
+    useSelector(cartSelector);
   const typeNames = ['тонке', 'традиційне'];
   const dispatch = useDispatch();
 
@@ -37,15 +43,15 @@ export default function Cart() {
     dispatch(clearCart());
   };
 
-  const onAddProductClick = item => {
+  const onAddProductClick = (item: ICartItem) => {
     dispatch(addItem(item));
   };
 
-  const onDeleteProductClick = id => {
+  const onDeleteProductClick = (id: number) => {
     dispatch(deleteItem(id));
   };
 
-  const onMinusProductClick = id => {
+  const onMinusProductClick = (id: number) => {
     dispatch(decreaseItemQuantity(id));
   };
 
@@ -297,4 +303,6 @@ export default function Cart() {
       )}
     </div>
   );
-}
+};
+
+export default Cart;

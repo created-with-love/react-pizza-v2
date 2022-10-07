@@ -7,7 +7,7 @@ import { cartSelector } from 'redux/slices/cartSlice';
 import { clear } from 'redux/slices/searchSlice';
 import '../scss/components/_header.scss';
 
-const Header = () => {
+const Header: React.FC = () => {
   const { totalPrice, totalCount }: { totalPrice: number; totalCount: number } =
     useSelector(cartSelector);
   const dispatch = useDispatch();

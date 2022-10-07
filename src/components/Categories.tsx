@@ -8,7 +8,7 @@ interface ICategoriesProps {
   categories: string[]
 }
 
-const Categories = ({ value, setValue, categories }: ICategoriesProps) => {
+const Categories: React.FC<ICategoriesProps> = ({ value, setValue, categories }) => {
   const dispatch = useDispatch();
 
   const onClickCategory = (index: number) => {

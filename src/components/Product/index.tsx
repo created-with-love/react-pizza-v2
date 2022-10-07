@@ -1,20 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addItem, cartItemsSelector } from 'redux/slices/cartSlice';
+import { ICartItem, IProduct } from 'types';
 import 'scss/components/_pizza-block.scss';
 import 'scss/components/_button.scss';
 import styles from './Product.module.scss';
-import { ICartItem, IProduct } from 'types';
 
 interface IProductProps {
   product: IProduct
 }
 
-const Product = ({ product }: IProductProps): JSX.Element => {
+const Product :React.FC<IProductProps> = ({ product }) => {
   const { name, price, imageUrl, sizes, types, description, id } = product;
   const [activeType, setActiveType] = useState(types[0]);
   const [activeSize, setActiveSize] = useState(sizes[0]);
   const cartItems: ICartItem[] = useSelector(cartItemsSelector);
+  const dispatch = useDispatch();
 
   const currentCartItems = cartItems.filter((item: ICartItem) => item.name === name);
   const currentQuantityInCart =
@@ -23,8 +24,7 @@ const Product = ({ product }: IProductProps): JSX.Element => {
           return prev + cur.quantity || 0;
         }, 0)
       : 0;
-
-  const dispatch = useDispatch();
+  
   const typeNames = ['тонке', 'традиційне'];
 
   useEffect(() => {

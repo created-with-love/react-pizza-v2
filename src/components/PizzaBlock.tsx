@@ -6,14 +6,13 @@ import { ICartItem, IProduct } from 'types';
 import '../scss/components/_pizza-block.scss';
 import '../scss/components/_button.scss';
 
-
-const PizzaBlock = (props: IProduct) => {
+const PizzaBlock: React.FC<IProduct> = props => {
   const { name, price, imageUrl, sizes, types, description, id } = props;
   const [activeType, setActiveType] = useState(types[0]);
   const [activeSize, setActiveSize] = useState(sizes[0]);
   const cartItems: ICartItem[] = useSelector(cartItemsSelector);
 
-  const currentCartItems = cartItems.filter(item => item.name === name);
+  const currentCartItems: ICartItem[] = cartItems.filter(item => item.name === name);
   const currentQuantityInCart =
     currentCartItems.length > 0
       ? currentCartItems.reduce((prev, cur) => {

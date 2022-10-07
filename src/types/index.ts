@@ -16,8 +16,9 @@ export interface ICartItem {
   imageUrl: string;
   activeSize: number;
   activeType: number;
-  id: string;
+  id: number;
   quantity: number;
+  description?: string;
 }
 
 export interface IData {

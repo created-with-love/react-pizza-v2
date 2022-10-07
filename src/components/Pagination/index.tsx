@@ -8,12 +8,12 @@ interface IPaginationProps {
   currentPage: number;
 }
 
-export const Pagination = ({
+export const Pagination: React.FC<IPaginationProps> = ({
   count,
   setCurrentPage,
   itemsPerPage,
   currentPage,
-}: IPaginationProps) => {
+}) => {
   return (
     <ReactPaginate
       className={styles.root}

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
-import Product from 'components/Product';
+import { Product } from 'components';
 import { instance } from 'assets/static/axiosInstance';
-import ProductRecommendations from 'components/ProductRecommendations/index.jsx';
+import { ProductRecommendations } from 'components';
 import { IData, IDataItem, IProduct } from 'types';
 import { isEmpty } from 'helpers';
 
@@ -13,7 +13,7 @@ const override = {
   borderColor: "red"
 };
 
-export default function ProductPage() {
+const ProductPage: React.FC = () => {
   const [product, setProduct] = useState<IProduct>({
     name: '',
     price: 0,
@@ -80,3 +80,5 @@ export default function ProductPage() {
     </div>
   );
 }
+
+export default ProductPage;

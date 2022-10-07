@@ -10,12 +10,11 @@ import styles from './Search.module.scss';
 
 const Search = () => {
   const [searchValue, setSearchValue] = useState('');
+  const {value} = useSelector((state: IState) => state.search);
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const {value} = useSelector((state: IState) => state.search);
-  
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const setStoreSearchValue = useCallback(
     debounce((string: string) => {
@@ -48,10 +47,7 @@ const Search = () => {
   const onCleanBtnClick = () => {
     dispatch(clear());
     setSearchValue('');
-
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
+    inputRef.current?.focus();
   };
 
   return (

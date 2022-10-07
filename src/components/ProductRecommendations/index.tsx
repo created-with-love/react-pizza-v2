@@ -8,10 +8,12 @@ interface IProductRecommendationsProps {
   items: IProduct[]
 }
 
-function ProductRecommendations({items}: IProductRecommendationsProps) {
+const ProductRecommendations: React.FC<IProductRecommendationsProps> = ({items}) => {
   const [activeItemIndex, setActiveItemIndex] = useState(0);
   const [width, setWidth] = useState(window.innerWidth);
+
   const chevronWidth = 40;
+  const isMobile = width <= 768;
 
   function handleWindowSizeChange() {
       setWidth(window.innerWidth);
@@ -22,8 +24,6 @@ function ProductRecommendations({items}: IProductRecommendationsProps) {
           window.removeEventListener('resize', handleWindowSizeChange);
       }
   }, []);
-
-  const isMobile = width <= 768;
 
   return (
     <div style={{ padding: `0 ${chevronWidth}px` }}>
