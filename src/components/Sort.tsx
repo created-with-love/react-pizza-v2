@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
 import { setSortType } from 'redux/slices/filterSlice';
-import { ISort } from 'types';
+import { useAppDispatch } from 'redux/store';
+import { ISort, SortValue } from 'types';
 import arrowTop from '../assets/img/arrow-top.svg';
 import arrowDown from '../assets/img/down-arrow.svg';
 import '../scss/components/_sort.scss';
@@ -20,7 +20,7 @@ type PopupEvent = MouseEvent & {
 const Sort: React.FC<ISortProps> = ({ sort, sortArray }) => {
   const [showPopup, setShowPopup] = useState(false);
   const sortRef = useRef<HTMLDivElement>(null);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const onSortItemClick = (value: ISort) => {
     dispatch(setSortType(value));
@@ -65,7 +65,7 @@ const Sort: React.FC<ISortProps> = ({ sort, sortArray }) => {
         <div className="sort__popup">
           <ul>
             {sortArray.map(item => {
-              const isPrice = item.value === 'price';
+              const isPrice = item.value === SortValue.PRICE;
               const isActive = isPrice
                 ? sort.value === item.value && sort.order === item.order
                 : sort.value === item.value;

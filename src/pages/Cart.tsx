@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   clearCart,
   addItem,
@@ -7,8 +7,9 @@ import {
   decreaseItemQuantity,
   cartSelector,
 } from 'redux/slices/cartSlice';
-import emptyCart from '../assets/img/empty-cart.png';
 import { ICartItem } from 'types';
+import { useAppDispatch } from 'redux/store';
+import emptyCart from '../assets/img/empty-cart.png';
 
 const emptyCartMarkUp = () => {
   return (
@@ -37,9 +38,7 @@ const Cart: React.FC = () => {
   }: { items: ICartItem[]; totalPrice: number; totalCount: number } =
     useSelector(cartSelector);
   const typeNames = ['тонке', 'традиційне'];
-  const dispatch = useDispatch();
-
-  console.log('🚀 ~ file: Cart.tsx ~ line 38 ~ items', items);
+  const dispatch = useAppDispatch();
 
   const onClearCart = () => {
     dispatch(clearCart());

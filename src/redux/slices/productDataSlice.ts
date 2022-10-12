@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { RootState } from 'redux/store';
-import { IData, IProductDataState, ISort } from 'types';
+import { IData, IProductDataState, ISort, Status } from 'types';
 
 interface IParams {
   instance: AxiosInstance;
@@ -16,7 +16,7 @@ interface IParams {
 const initialState: IProductDataState = {
   pizzas: [],
   pizzaCount: 0,
-  status: 'loading' // loading | success | error
+  status: Status.LOADING // loading | success | error
 };
 
 export const fetchPizzas = createAsyncThunk<IData, IParams>(
@@ -37,24 +37,24 @@ export const productDataSlice = createSlice({
   reducers: {
     clearPizzas: state => {
       state.pizzas = [];
-      state.status = 'loading';
+      state.status = Status.LOADING;
     }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchPizzas.pending, (state: IProductDataState) => {
       state.pizzas = [];
-      state.status = 'loading';
+      state.status = Status.LOADING;
     });
     
     builder.addCase(fetchPizzas.fulfilled, (state: IProductDataState, action: PayloadAction<IData>) => {
       const {count, items} = action.payload;
       state.pizzas = items;
       state.pizzaCount = count;
-      state.status = 'success';
+      state.status = Status.SUCCESS;
     });
 
     builder.addCase(fetchPizzas.rejected, (state: IProductDataState) => {
-      state.status = 'error';
+      state.status = Status.ERROR;
       state.pizzas = [];
     });
   }

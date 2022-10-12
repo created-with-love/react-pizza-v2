@@ -1,5 +1,5 @@
 import { useEffect, useRef, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
 import { setCategoryId, setFilters, setPage } from 'redux/slices/filterSlice';
@@ -9,8 +9,8 @@ import { clear } from 'redux/slices/searchSlice';
 import { Categories, ProductListing, Sort, Pagination, Error } from 'components';
 import { categories, sortArray } from 'assets/static/filtersData';
 import { instance } from 'assets/static/axiosInstance';
-import { ISort } from 'types';
-import { RootState } from 'redux/store';
+import { ISort, SortName, SortOrder, SortValue, Status } from 'types';
+import { RootState, useAppDispatch } from 'redux/store';
 
 const Home: React.FC = () => {
   const isSearch = useRef(false);
@@ -25,7 +25,7 @@ const Home: React.FC = () => {
 
   const itemsPerPage = 8;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handlePizzaCategory = (value: number) => {
     if (searchValue) {
@@ -37,12 +37,12 @@ const Home: React.FC = () => {
 
   const getOrder = (sortOrder: ISort) => {
     switch (sortOrder.value) {
-      case 'price':
+      case SortValue.PRICE:
         return sortOrder.order;
-      case 'name':
-        return 'asc';
+      case SortValue.NAME:
+        return SortOrder.ASC;
       default:
-        return 'desc';
+        return SortOrder.DESC;
     }
   };
 
@@ -69,8 +69,6 @@ const Home: React.FC = () => {
       }
 
       dispatch(
-        // TODO
-        // @ts-ignore
         fetchPizzas({
           instance,
           itemsPerPage,
@@ -86,7 +84,7 @@ const Home: React.FC = () => {
   );
 
   useEffect(() => {
-    if (searchValue && status === 'success' && pizzas?.length === 0) {
+    if (searchValue && status === Status.SUCCESS && pizzas?.length === 0) {
       navigate('/404');
     }
   }, [status, pizzas, navigate, searchValue]);  
@@ -101,22 +99,24 @@ const Home: React.FC = () => {
       }
 
       const defaultSort: ISort = {
-        name: "За популярністю",
-        value: "rating",
-        order: "desc"
+        name: SortName.RATING,
+        value: SortValue.RATING,
+        order: SortOrder.DESC
       };
 
-      if (params?.sortOrder && params.sort === 'price') {
-        const sort = sortArray.find(
+      let sortItem = defaultSort;
+
+      if (params?.sortOrder && params.sort === SortValue.PRICE) {
+        sortItem = sortArray.find(
           item =>
             item?.order === params.sortOrder && item.value === params.sort,
         ) || defaultSort;
 
-        dispatch(setFilters({ ...paramsPayload, sort }));
       } else {
-        const sort = sortArray.find(item => item.value === params.sort) || defaultSort;
-        dispatch(setFilters({ ...paramsPayload, sort }));
+        sortItem = sortArray.find(item => item.value === params.sort) || defaultSort;
       }
+      
+      dispatch(setFilters({ ...paramsPayload, sort: sortItem }));
       isSearch.current = true;
     }
   }, [dispatch]);
@@ -146,7 +146,7 @@ const Home: React.FC = () => {
     if (isMounted.current) {
       const queryString = qs.stringify({
         sort: sort.value,
-        sortOrder: sort?.order ? sort.order : 'desc',
+        sortOrder: sort?.order ? sort.order : SortOrder.DESC,
         categoryId,
         currentPage,
       });

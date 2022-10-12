@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { FilterSliceState, ISort } from 'types';
+import { FilterSliceState, ISort, SortName, SortValue } from 'types';
 
 const initialState: FilterSliceState = {
   categoryId: 0,
   currentPage: 1,
-  sort: { name: 'За популярністю', value: 'rating' }
+  sort: { name: SortName.RATING, value: SortValue.RATING }
 };
 
 export const filterSlice = createSlice({

@@ -40,15 +40,39 @@ export interface IDataItem {
   items: IProduct
 }
 
+export enum SortName {
+  RATING = "За популярністю",
+  NAME = "За алфавітом",
+  PRICE_HIGH = "Спочатку дорожчі",
+  PRICE_LOW = "Спочатку дешевші"
+}
+
+export enum SortValue {
+  RATING = 'rating',
+  PRICE = 'price',
+  NAME = 'name'
+}
+
+export enum SortOrder {
+  DESC = 'desc',
+  ASC = 'asc'
+}
+
+export enum Status {
+  SUCCESS = "success",
+  LOADING = "loading",
+  ERROR = "error"
+}
+
 export interface ISort {
-  name: "За популярністю" | "Спочатку дорожчі" | "Спочатку дешевші" | "За алфавітом";
-  value: "rating" | "price" | "name";
-  order?: "desc" | "asc";
+  name: SortName.RATING| SortName.PRICE_HIGH | SortName.PRICE_LOW | SortName.NAME;
+  value: SortValue.RATING | SortValue.PRICE | SortValue.NAME;
+  order?: SortOrder.DESC | SortOrder.ASC;
 }
 
 export interface IProductDataState {
   pizzaCount: number,
-  status: "success" | "loading" | "error",
+  status: Status.SUCCESS | Status.LOADING | Status.ERROR,
   pizzas: IProduct[]
 }
 

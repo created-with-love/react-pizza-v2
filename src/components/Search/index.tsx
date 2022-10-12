@@ -1,19 +1,19 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { clear, setValue } from '../../redux/slices/searchSlice';
+import { RootState, useAppDispatch } from 'redux/store';
 import searchIcon from '../../assets/img/search.png';
 import closeIcon from '../../assets/img/close.png';
 import debounce from 'lodash.debounce';
 import styles from './Search.module.scss';
-import { RootState } from 'redux/store';
 
 const Search = () => {
   const [searchValue, setSearchValue] = useState('');
   const {value} = useSelector((state: RootState) => state.search);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const setStoreSearchValue = useCallback(

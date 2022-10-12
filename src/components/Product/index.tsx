@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { addItem, cartItemsSelector } from 'redux/slices/cartSlice';
 import { ICartItem, IProduct } from 'types';
+import { useAppDispatch } from 'redux/store';
 import 'scss/components/_pizza-block.scss';
 import 'scss/components/_button.scss';
 import styles from './Product.module.scss';
@@ -15,7 +16,7 @@ const Product :React.FC<IProductProps> = ({ product }) => {
   const [activeType, setActiveType] = useState(types[0]);
   const [activeSize, setActiveSize] = useState(sizes[0]);
   const cartItems: ICartItem[] = useSelector(cartItemsSelector);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const currentCartItems = cartItems.filter((item: ICartItem) => item.name === name);
   const currentQuantityInCart =

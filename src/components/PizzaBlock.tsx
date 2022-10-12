@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { addItem, cartItemsSelector } from 'redux/slices/cartSlice';
 import { ICartItem, IProduct } from 'types';
+import { useAppDispatch } from 'redux/store';
 import '../scss/components/_pizza-block.scss';
 import '../scss/components/_button.scss';
 
@@ -24,7 +25,7 @@ const PizzaBlock: React.FC<IProduct> = props => {
         }, 0)
       : 0;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const typeNames = ['тонке', 'традиційне'];
 
   const onQuantityClick = () => {

@@ -1,10 +1,10 @@
-import { ISort } from "types";
+import { ISort, SortName, SortValue, SortOrder } from "types";
 
 export const sortArray: ISort[] = [
-  { name: 'За популярністю', value: 'rating' },
-  { name: 'Спочатку дорожчі', value: 'price', order: 'desc' },
-  { name: 'Спочатку дешевші', value: 'price', order: 'asc' },
-  { name: 'За алфавітом', value: 'name' },
+  { name: SortName.RATING, value: SortValue.RATING },
+  { name: SortName.PRICE_HIGH, value: SortValue.PRICE, order: SortOrder.DESC },
+  { name: SortName.PRICE_LOW, value: SortValue.PRICE, order: SortOrder.ASC },
+  { name: SortName.NAME, value: SortValue.NAME },
 ];
 
 export const categories = [
