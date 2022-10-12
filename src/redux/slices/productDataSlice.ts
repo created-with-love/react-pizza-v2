@@ -19,15 +19,13 @@ const initialState: IProductDataState = {
   status: 'loading' // loading | success | error
 };
 
-export const fetchPizzas = createAsyncThunk(
+export const fetchPizzas = createAsyncThunk<IData, IParams>(
   'productData/fetchPizzas',
-  async (params: IParams) => {
+  async (params) => {
     const {instance, itemsPerPage, currentPage, sort, categoryBlock, order, searchQuery} = params;
-    const { data } = await instance.get(
+    const { data } = await instance.get<IData>(
       `items?limit=${itemsPerPage}&page=${currentPage}&sortBy=${sort.value}${categoryBlock}&order=${order}${searchQuery}`
     );
-
-    console.log("🚀 ~ file: productDataSlice.ts ~ line 27 ~ data", data);
 
     return data;
   }
@@ -42,22 +40,24 @@ export const productDataSlice = createSlice({
       state.status = 'loading';
     }
   },
-  extraReducers: {
-    [fetchPizzas.pending]: (state: IProductDataState) => {
+  extraReducers: (builder) => {
+    builder.addCase(fetchPizzas.pending, (state: IProductDataState) => {
       state.pizzas = [];
       state.status = 'loading';
-    },
-    [fetchPizzas.fulfilled]: (state: IProductDataState, action: PayloadAction<IData>) => {
+    });
+    
+    builder.addCase(fetchPizzas.fulfilled, (state: IProductDataState, action: PayloadAction<IData>) => {
       const {count, items} = action.payload;
       state.pizzas = items;
       state.pizzaCount = count;
       state.status = 'success';
-    },
-    [fetchPizzas.rejected]: (state: IProductDataState) => {
+    });
+
+    builder.addCase(fetchPizzas.rejected, (state: IProductDataState) => {
       state.status = 'error';
       state.pizzas = [];
-    }
-  },
+    });
+  }
 });
 
 export const selectPizzas = (state: RootState) => state.productData.pizzas;

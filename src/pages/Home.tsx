@@ -95,16 +95,27 @@ const Home: React.FC = () => {
   useEffect(() => {
     if (window?.location?.search) {
       const params = qs.parse(window.location.search.substring(1));
+      const paramsPayload = {
+        currentPage: Number(params.currentPage),
+        categoryId: Number(params.categoryId)
+      }
+
+      const defaultSort: ISort = {
+        name: "За популярністю",
+        value: "rating",
+        order: "desc"
+      };
 
       if (params?.sortOrder && params.sort === 'price') {
-        const sortItem = sortArray.find(
+        const sort = sortArray.find(
           item =>
             item?.order === params.sortOrder && item.value === params.sort,
-        );
-        dispatch(setFilters({ ...params, sortItem }));
+        ) || defaultSort;
+
+        dispatch(setFilters({ ...paramsPayload, sort }));
       } else {
-        const sortItem = sortArray.find(item => item.value === params.sort);
-        dispatch(setFilters({ ...params, sortItem }));
+        const sort = sortArray.find(item => item.value === params.sort) || defaultSort;
+        dispatch(setFilters({ ...paramsPayload, sort }));
       }
       isSearch.current = true;
     }

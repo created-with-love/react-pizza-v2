@@ -23,11 +23,11 @@ export const filterSlice = createSlice({
     setPage(state, action: PayloadAction<number>) {
       state.currentPage = action.payload;
     },
-    setFilters(state, action: PayloadAction<FilterSliceState & { sortItem: ISort}>) {
+    setFilters(state, action: PayloadAction<FilterSliceState>) {
       const { payload } = action
-      state.currentPage = Number(payload.currentPage);
-      state.categoryId = Number(payload.categoryId);
-      state.sort = payload.sortItem;
+      state.currentPage = payload.currentPage;
+      state.categoryId = payload.categoryId;
+      state.sort = payload.sort;
     }
   },
 });
