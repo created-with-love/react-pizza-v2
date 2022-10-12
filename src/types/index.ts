@@ -16,9 +16,18 @@ export interface ICartItem {
   imageUrl: string;
   activeSize: number;
   activeType: number;
-  id: number;
-  quantity: number;
+  id: string;
+  quantity?: number;
   description?: string;
+}
+
+export interface IAddToCartItem {
+  name: string;
+  price: number;
+  imageUrl: string;
+  activeSize: number;
+  activeType: number;
+  id: string;
 }
 
 export interface IData {
@@ -32,28 +41,25 @@ export interface IDataItem {
 }
 
 export interface ISort {
-  name: string,
-  order?: string,
-  value: string
+  name: "За популярністю" | "Спочатку дорожчі" | "Спочатку дешевші" | "За алфавітом";
+  value: "rating" | "price" | "name";
+  order?: "desc" | "asc";
 }
 
-export interface IState {
-  search: {
-    value: string
-  },
-  cart: {
-    items: ICartItem[],
-    totalCount: number,
-    totalPrice: number
-  },
-  filter: {
-    categoryId: number,
-    currentPage: number,
-    sort: ISort
-  },
-  productData: {
-    pizzaCount: number,
-    status: "success" | "loading" | "error",
-    pizzas: IProduct[]
-  }
+export interface IProductDataState {
+  pizzaCount: number,
+  status: "success" | "loading" | "error",
+  pizzas: IProduct[]
+}
+
+export interface CartSliceState {
+  items: ICartItem[];
+  totalPrice: number;
+  totalCount: number;
+};
+
+export interface FilterSliceState {
+  categoryId: number;
+  currentPage: number;
+  sort: ISort;
 }

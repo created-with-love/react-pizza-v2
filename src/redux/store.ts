@@ -14,3 +14,5 @@ export const store = configureStore({
   },
   preloadedState: loadState(),
 });
+
+export type RootState = ReturnType<typeof store.getState>

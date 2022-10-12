@@ -11,10 +11,10 @@ interface ISortProps {
   sortArray: ISort[]
 }
 
-type M = MouseEvent & {
-   path?: HTMLElement []; 
+type PopupEvent = MouseEvent & {
+   path: Node[]; 
    composedPath: (tar?: HTMLElement) => EventTarget[]; 
-   target: any; 
+   target: HTMLElement; 
 }
 
 const Sort: React.FC<ISortProps> = ({ sort, sortArray }) => {
@@ -32,12 +32,12 @@ const Sort: React.FC<ISortProps> = ({ sort, sortArray }) => {
   };
 
   useEffect(() => {
-    const handleOutsideClick = (e: M) => {
-      // e.path и его аналог для браузера firefox
+    const handleOutsideClick = (e: MouseEvent) => {
+      const _event = e as PopupEvent;
       const path =
-        e.path ||
-        (e.composedPath && e.composedPath()) ||
-        e.composedPath(e.target);
+        _event.path ||
+        (_event.composedPath && _event.composedPath()) ||
+        _event.composedPath(_event.target);
       if (sortRef.current && !path.includes(sortRef.current)) {
         setShowPopup(false);
       }

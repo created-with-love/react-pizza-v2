@@ -1,3 +1,5 @@
+import {RootState} from './store';
+
 const KEY = 'redux';
 export function loadState() {
   try {
@@ -9,7 +11,7 @@ export function loadState() {
   }
 }
 
-export async function saveState(state) {
+export async function saveState(state: RootState) {
   try {
     const serializedState = JSON.stringify(state);
     localStorage.setItem(KEY, serializedState);

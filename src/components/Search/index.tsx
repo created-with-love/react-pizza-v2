@@ -5,12 +5,12 @@ import { clear, setValue } from '../../redux/slices/searchSlice';
 import searchIcon from '../../assets/img/search.png';
 import closeIcon from '../../assets/img/close.png';
 import debounce from 'lodash.debounce';
-import { IState } from 'types';
 import styles from './Search.module.scss';
+import { RootState } from 'redux/store';
 
 const Search = () => {
   const [searchValue, setSearchValue] = useState('');
-  const {value} = useSelector((state: IState) => state.search);
+  const {value} = useSelector((state: RootState) => state.search);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const dispatch = useDispatch();
@@ -36,8 +36,10 @@ const Search = () => {
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const path = window?.location?.pathname;
-      if (path.includes('/product') || path.includes('/cart')) {
-        navigate('/');
+      if (path.includes('/product') || path.includes('/cart') || path.includes('/404')) {
+        setTimeout(() => {
+          navigate('/');
+        }, 400);
       }
     
     setSearchValue(e.target.value);

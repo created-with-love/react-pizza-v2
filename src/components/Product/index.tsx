@@ -21,7 +21,11 @@ const Product :React.FC<IProductProps> = ({ product }) => {
   const currentQuantityInCart =
     currentCartItems.length > 0
       ? currentCartItems.reduce((prev: number, cur: ICartItem) => {
-          return prev + cur.quantity || 0;
+          if (cur.quantity) {
+            return prev + cur.quantity;
+          }
+
+          return prev;
         }, 0)
       : 0;
   

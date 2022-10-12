@@ -4,11 +4,13 @@ import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
 import { setCategoryId, setFilters, setPage } from 'redux/slices/filterSlice';
 import { fetchPizzas } from 'redux/slices/productDataSlice';
+import { clear } from 'redux/slices/searchSlice';
 
 import { Categories, ProductListing, Sort, Pagination, Error } from 'components';
 import { categories, sortArray } from 'assets/static/filtersData';
 import { instance } from 'assets/static/axiosInstance';
-import { ISort, IState } from 'types';
+import { ISort } from 'types';
+import { RootState } from 'redux/store';
 
 const Home: React.FC = () => {
   const isSearch = useRef(false);
@@ -19,13 +21,16 @@ const Home: React.FC = () => {
     search: { value: searchValue },
     filter: { categoryId, sort, currentPage },
     productData: { pizzas, pizzaCount, status },
-  } = useSelector((state: IState) => state);
+  } = useSelector((state: RootState) => state);
 
   const itemsPerPage = 8;
 
   const dispatch = useDispatch();
 
   const handlePizzaCategory = (value: number) => {
+    if (searchValue) {
+      dispatch(clear());
+    }
     dispatch(setCategoryId(value));
     dispatch(setPage(1));
   };
@@ -56,7 +61,7 @@ const Home: React.FC = () => {
   const getPizzas = useCallback(
     async (currentPage: number, searchQuery = '') => {
       const categoryBlock = categoryId > 0 ? `&category=${categoryId}` : '';
-      const order = getOrder(sort);
+      const order = getOrder(sort) as string;
 
       // to prevent double fetch for search
       if (searchQuery && categoryBlock) {

@@ -16,7 +16,11 @@ const PizzaBlock: React.FC<IProduct> = props => {
   const currentQuantityInCart =
     currentCartItems.length > 0
       ? currentCartItems.reduce((prev, cur) => {
+        if (cur.quantity) {
           return prev + cur.quantity;
+        }
+
+        return prev;
         }, 0)
       : 0;
 

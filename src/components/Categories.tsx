@@ -1,5 +1,3 @@
-import { useDispatch } from 'react-redux';
-import { clear } from 'redux/slices/searchSlice';
 import '../scss/components/_categories.scss';
 
 interface ICategoriesProps {
@@ -9,19 +7,12 @@ interface ICategoriesProps {
 }
 
 const Categories: React.FC<ICategoriesProps> = ({ value, setValue, categories }) => {
-  const dispatch = useDispatch();
-
-  const onClickCategory = (index: number) => {
-    dispatch(clear());
-    setValue(index);
-  };
-
   return (
     <div className="categories">
       <ul>
         {categories.map((name, index) => (
           <li
-            onClick={() => onClickCategory(index)}
+            onClick={() => setValue(index)}
             className={value === index ? 'active' : ''}
             data-index={index}
             key={name}
