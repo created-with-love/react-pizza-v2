@@ -9,6 +9,8 @@ import Pagination from './Pagination';
 import Product from './Product';
 import ProductRecommendations from './ProductRecommendations';
 import Error from './Error';
+import EmptyCart from './EmptyCart';
+import CartItem from './CartItem';
 
 export {
   Header,
@@ -21,5 +23,7 @@ export {
   Pagination,
   Product,
   ProductRecommendations,
-  Error
+  Error,
+  EmptyCart,
+  CartItem
 };
