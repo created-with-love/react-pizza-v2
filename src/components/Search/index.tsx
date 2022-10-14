@@ -1,10 +1,10 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { clear, setValue } from '../../redux/slices/searchSlice';
+import { clear, setValue } from 'redux/slices/searchSlice';
 import { RootState, useAppDispatch } from 'redux/store';
-import searchIcon from '../../assets/img/search.png';
-import closeIcon from '../../assets/img/close.png';
+import searchIcon from 'assets/img/search.png';
+import closeIcon from 'assets/img/close.png';
 import debounce from 'lodash.debounce';
 import styles from './Search.module.scss';
 

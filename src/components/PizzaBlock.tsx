@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import { addItem, cartItemsSelector } from 'redux/slices/cartSlice';
 import { ICartItem, IProduct } from 'types';
 import { useAppDispatch } from 'redux/store';
-import '../scss/components/_pizza-block.scss';
-import '../scss/components/_button.scss';
+import 'scss/components/_pizza-block.scss';
+import 'scss/components/_button.scss';
 
 const PizzaBlock: React.FC<IProduct> = props => {
   const { name, price, imageUrl, sizes, types, description, id } = props;

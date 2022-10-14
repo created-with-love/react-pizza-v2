@@ -1,12 +1,13 @@
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import logo from '../assets/img/pizza-logo.svg';
-import cartImg from '../assets/img/cart.svg';
 import Search from './Search';
 import { cartSelector } from 'redux/slices/cartSlice';
 import { clear } from 'redux/slices/searchSlice';
 import { useAppDispatch } from 'redux/store';
-import '../scss/components/_header.scss';
+import logo from 'assets/img/pizza-logo.svg';
+import cartImg from 'assets/img/cart.svg';
+import 'scss/components/_header.scss';
 
 const Header: React.FC = () => {
   const { totalPrice, totalCount }: { totalPrice: number; totalCount: number } =
@@ -51,4 +52,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default React.memo(Header);

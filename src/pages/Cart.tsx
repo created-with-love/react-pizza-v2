@@ -122,31 +122,15 @@ const Cart: React.FC = () => {
             </div>
           </div>
           <div className="content__items">
-            {items.map(
-              ({
-                name,
-                price,
-                imageUrl,
-                activeType,
-                activeSize,
-                description,
-                id,
-                quantity,
-              }) => (
-                <CartItem 
-                  name={name}
-                  price={price}
-                  imageUrl={imageUrl}
-                  activeType={activeType}
-                  activeSize={activeSize}
-                  description={description}
-                  id={id}
-                  quantity={quantity}
+            {items.map(item => (
+                <CartItem
+                  key={item.id} 
                   typeNames={typeNames}
-                  checkedQuantity={quantity ? quantity : 1}
+                  checkedQuantity={item.quantity ? item.quantity : 1}
                   onMinusProductClick={onMinusProductClick}
                   onDeleteProductClick={onDeleteProductClick}
                   onAddProductClick={onAddProductClick}
+                  {...item}
                 />),
             )}
           </div>

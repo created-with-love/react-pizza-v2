@@ -27,13 +27,13 @@ const Home: React.FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const handlePizzaCategory = (value: number) => {
+  const handlePizzaCategory = useCallback((value: number) => {
     if (searchValue) {
       dispatch(clear());
     }
     dispatch(setCategoryId(value));
     dispatch(setPage(1));
-  };
+  }, [dispatch, searchValue]);
 
   const getOrder = (sortOrder: ISort) => {
     switch (sortOrder.value) {

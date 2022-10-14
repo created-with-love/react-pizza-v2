@@ -1,9 +1,10 @@
-import '../scss/components/_categories.scss';
+import React from 'react';
+import 'scss/components/_categories.scss';
 
 interface ICategoriesProps {
   value: number;
   setValue: (value: number) => void;
-  categories: string[]
+  categories: string[];
 }
 
 const Categories: React.FC<ICategoriesProps> = ({ value, setValue, categories }) => {
@@ -25,4 +26,4 @@ const Categories: React.FC<ICategoriesProps> = ({ value, setValue, categories })
   );
 };
 
-export default Categories;
+export default React.memo(Categories);

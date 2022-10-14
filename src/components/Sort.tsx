@@ -1,10 +1,11 @@
+import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { setSortType } from 'redux/slices/filterSlice';
 import { useAppDispatch } from 'redux/store';
 import { ISort, SortValue } from 'types';
-import arrowTop from '../assets/img/arrow-top.svg';
-import arrowDown from '../assets/img/down-arrow.svg';
-import '../scss/components/_sort.scss';
+import arrowTop from 'assets/img/arrow-top.svg';
+import arrowDown from 'assets/img/down-arrow.svg';
+import 'scss/components/_sort.scss';
 
 interface ISortProps {
   sort: ISort,
@@ -21,7 +22,7 @@ const Sort: React.FC<ISortProps> = ({ sort, sortArray }) => {
   const [showPopup, setShowPopup] = useState(false);
   const sortRef = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
-
+  
   const onSortItemClick = (value: ISort) => {
     dispatch(setSortType(value));
     setShowPopup(false);
@@ -87,4 +88,4 @@ const Sort: React.FC<ISortProps> = ({ sort, sortArray }) => {
   );
 };
 
-export default Sort;
+export default React.memo(Sort);
