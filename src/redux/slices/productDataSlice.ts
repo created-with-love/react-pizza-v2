@@ -1,17 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { AxiosInstance } from 'axios';
-import { RootState } from 'redux/store';
-import { IData, IProductDataState, ISort, Status } from 'types';
-
-interface IParams {
-  instance: AxiosInstance;
-  itemsPerPage: number;
-  currentPage: number;
-  sort: ISort;
-  categoryBlock: string;
-  order: string,
-  searchQuery: string;
-}
+import { IData, IProductDataState, Status, IParams } from 'types';
 
 const initialState: IProductDataState = {
   pizzas: [],
@@ -59,10 +47,6 @@ export const productDataSlice = createSlice({
     });
   }
 });
-
-export const selectPizzas = (state: RootState) => state.productData.pizzas;
-export const selectPizzaById = (id: string) => (state: RootState) =>
-  state.productData.pizzas.find(obj => obj.id === id);
 
 export const { clearPizzas } = productDataSlice.actions;
 

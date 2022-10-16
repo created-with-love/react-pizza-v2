@@ -4,12 +4,12 @@ import {
   clearCart,
   addItem,
   deleteItem,
-  decreaseItemQuantity,
-  cartSelector,
+  decreaseItemQuantity
 } from 'redux/slices/cartSlice';
 import { ICartItem } from 'types';
 import { useAppDispatch } from 'redux/store';
 import { EmptyCart, CartItem } from 'components';
+import { cartSelector } from 'redux/selectors';
 
 const Cart: React.FC = () => {
   const {

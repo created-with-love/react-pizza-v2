@@ -1,3 +1,5 @@
+import { AxiosInstance } from 'axios';
+
 export interface IProduct {
   name: string;
   price: number;
@@ -86,4 +88,30 @@ export interface FilterSliceState {
   categoryId: number;
   currentPage: number;
   sort: ISort;
+}
+
+export interface IParams {
+  instance: AxiosInstance;
+  itemsPerPage: number;
+  currentPage: number;
+  sort: ISort;
+  categoryBlock: string;
+  order: string,
+  searchQuery: string;
+}
+
+export interface ICartItemProps {
+  id: string;
+  imageUrl: string;
+  name: string;
+  activeType: number;
+  activeSize: number;
+  price: number;
+  description?: string;
+  quantity?: number;
+  typeNames: string[];
+  checkedQuantity: number;
+  onMinusProductClick: (value: string) => void;
+  onDeleteProductClick: (value: string) => void;
+  onAddProductClick: (item: ICartItem) => void;
 }

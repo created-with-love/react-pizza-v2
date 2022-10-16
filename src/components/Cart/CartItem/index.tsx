@@ -1,21 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ICartItem } from 'types';
-
-interface ICartItemProps {
-  id: string;
-  imageUrl: string;
-  name: string;
-  activeType: number;
-  activeSize: number;
-  price: number;
-  description?: string;
-  quantity?: number;
-  typeNames: string[];
-  checkedQuantity: number;
-  onMinusProductClick: (value: string) => void;
-  onDeleteProductClick: (value: string) => void;
-  onAddProductClick: (item: ICartItem) => void;
-}
+import { ICartItemProps } from 'types';
 
 const CartItem: React.FC<ICartItemProps> = props => {
   const {

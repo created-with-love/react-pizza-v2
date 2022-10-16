@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { addItem, cartItemsSelector } from 'redux/slices/cartSlice';
+import { addItem } from 'redux/slices/cartSlice';
 import { ICartItem, IProduct } from 'types';
+import { cartItemsSelector } from 'redux/selectors';
 import { useAppDispatch } from 'redux/store';
 import 'scss/components/_pizza-block.scss';
 import 'scss/components/_button.scss';
