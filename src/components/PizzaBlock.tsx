@@ -45,7 +45,7 @@ const PizzaBlock: React.FC<IProduct> = props => {
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
       <Link to={`/product/${id}`} className="pizza-block__pdp-link">
-        <img className="pizza-block__image" src={imageUrl} alt={name} />
+        <img className="pizza-block__image" src={imageUrl} alt={name} width="260" height={260} />
         <h4 className="pizza-block__title">
         {name}
         </h4>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+
 import Search from './Search';
 import { clear } from 'redux/slices/searchSlice';
 import { useAppDispatch } from 'redux/store';

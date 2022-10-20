@@ -1,29 +1,14 @@
-import Header from './Header';
-import Categories from './Categories';
-import ProductListing from './ProductListing';
-import Sort from './Sort';
-import NotFoundBlock from './NotFoundBlock';
-import Search from './Search';
-import Skeleton from './Skeleton';
-import Pagination from './Pagination';
-import Product from './Product';
-import ProductRecommendations from './ProductRecommendations';
-import Error from './Error';
-import EmptyCart from './Cart/EmptyCart';
-import CartItem from './Cart/CartItem';
-
-export {
-  Header,
-  Categories,
-  ProductListing,
-  Sort,
-  NotFoundBlock,
-  Search,
-  Skeleton,
-  Pagination,
-  Product,
-  ProductRecommendations,
-  Error,
-  EmptyCart,
-  CartItem
-};
+export {default as Header} from './Header';
+export {default as Categories} from './Categories';
+export {default as ProductListing} from './ProductListing';
+export {default as Sort} from './Sort';
+export {default as NotFoundBlock} from './NotFoundBlock';
+export {default as Search} from './Search';
+export {default as Skeleton} from './Skeleton';
+export {default as Pagination} from './Pagination';
+export {default as Product} from './Product';
+export {default as ProductRecommendations} from './ProductRecommendations';
+export {default as Error} from './Error';
+export {default as EmptyCart} from './Cart/EmptyCart';
+export {default as CartItem} from './Cart/CartItem';
+ 

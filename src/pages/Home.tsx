@@ -1,16 +1,18 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
+import qs from 'qs';
+
 import { setCategoryId, setFilters, setPage } from 'redux/slices/filterSlice';
 import { fetchPizzas } from 'redux/slices/productDataSlice';
 import { clear } from 'redux/slices/searchSlice';
+import { RootState, useAppDispatch } from 'redux/store';
 
 import { Categories, ProductListing, Sort, Pagination, Error } from 'components';
 import { categories, sortArray } from 'assets/static/filtersData';
 import { instance } from 'assets/static/axiosInstance';
 import { ISort, SortName, SortOrder, SortValue, Status } from 'types';
-import { RootState, useAppDispatch } from 'redux/store';
+
 
 const Home: React.FC = () => {
   const isSearch = useRef(false);

@@ -1,17 +1,10 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import ClipLoader from "react-spinners/ClipLoader";
-import { Product } from 'components';
+import { Product, ProductRecommendations } from 'components';
 import { instance } from 'assets/static/axiosInstance';
-import { ProductRecommendations } from 'components';
 import { IData, IDataItem, IProduct } from 'types';
 import { isEmpty } from 'helpers';
-
-const override = {
-  display: "block",
-  margin: "0 auto",
-  borderColor: "red"
-};
+import Loader from 'components/Loader';
 
 const ProductPage: React.FC = () => {
   const [product, setProduct] = useState<IProduct>({
@@ -70,10 +63,9 @@ const ProductPage: React.FC = () => {
         <ProductRecommendations items={carouselItems} />
       )}
       {loading && (
-        <ClipLoader
+        <Loader 
           color={'#ffffff'}
           loading={loading}
-          cssOverride={override}
           size={250}
         />
       )}

@@ -1,5 +1,5 @@
-import React from 'react';
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+
 import { setSortType } from 'redux/slices/filterSlice';
 import { useAppDispatch } from 'redux/store';
 import { ISort, SortValue } from 'types';
